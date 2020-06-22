@@ -22,7 +22,7 @@ export class Delete extends Component
 
 
     //Delete Data
-    onDeleteConfirmation(id) {
+    onDeleteConfirmation =(id) =>{
 
         axios.delete("/api/sales/deletesales/" + id)
         this.setState({ deleteshowModal: false});
@@ -43,8 +43,8 @@ export class Delete extends Component
                           <h4> Are you sure?</h4>
                       </Modal.Content>
                       <Modal.Actions>
-                          <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                          <Button color="red" onClick={() => this.onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
+                          <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                          <Button color="red" onClick={() => onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
                       </Modal.Actions>
                   </Modal>
             </div>
