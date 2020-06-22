@@ -25,8 +25,6 @@ export class Customer extends Component
             direction: null, // should always be null
 
         }
-
-        
     }
     
     //Connect  to the server
@@ -66,56 +64,18 @@ export class Customer extends Component
         //console.log(customerObject);
     }
   
-    //Fetch data from the backend
-     populateCustomerData(){
-        axios.get("/api/customer")
-            .then(result => {
-                if (this._isMounted){
-                    const response = result.data;
-                    this.setState({customer: response, loading: false, failed: false, error:""});
-                }
-            })
-            .catch(error => {
-                this.setState({customer: [], loading: false, failed: true, error:"Customer data could not be loaded"});
-            });       
-    }
 
-    //Sorting -- Issue on 
-    handleSort = (clickedColumn) => {
-        const { customer, direction } = this.state
-        //console.log('last customer', customer) //remove this
-        this.setState({direction:'asc'})
-
-        let copydata = [...customer];
-
-        const sortedcustomer = (direction === 'asc')
-            ? _.orderBy(copydata, clickedColumn, 'asc')
-            : _.orderBy(copydata, clickedColumn, 'desc')
-
-        //console.log('sorting', sortedcustomer, clickedColumn, direction) //remove this
-
-        this.setState({ 
-            customer:sortedcustomer,
-            direction: direction === 'asc'? 'desc' : 'asc',
-            column:clickedColumn
-        })
-        //console.log('after setState', customer, direction) //remove this     
-    }
-   
     render(){
-
         const { direction, name, address, createshowModal } = this.state;
         const { onChangeName, onChangeAddress, onCancel, onCreate} = this;
+
           return (
             <React.Fragment>
-               
-
                {/* Create New customer Modal */}
                 <Modal size="small"   
                         onClose={this.createshowModal} open={createshowModal} 
                         trigger={<Button color="blue" onClick={() => this.setState({createshowModal:true})}>New Customer</Button>}   >
-                        <Header content="Create Customer" />
-                       
+                        <Header content="Create Customer" />                    
                         <Modal.Content>
                             <Form >
                                 <Form.Input  label="NAME" placeholder ='Name' value={name} onChange={(e) => onChangeName(e)}></Form.Input>
