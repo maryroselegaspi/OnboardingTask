@@ -8,10 +8,10 @@ import _ from 'lodash'
 export class Customer extends Component
 {
     _isMounted = false;
+
     constructor(props){
         super(props);
         
-
         this.state = {
             customer: [],
             loading: true,
@@ -24,53 +24,69 @@ export class Customer extends Component
             deleteshowModal: false,
             error: '',
             column: null,
-            direction: null, // should always be null
-            //_isUnsubscribeAPi:false,
-        }
-
-        
+            direction: null, 
+        }   
     }
     
     //Connect  to the server
-    componentDidMount = (props)=> {
-       // props._isUnsubscribeAPi = true;
-        this._isMounted =true
+    componentDidMount = ()=> {
+        this._isMounted = true;
         this.populateCustomerData();
     }
+
+    //Unmount component
     componentWillUnmount() {
-        this._isMounted =false
+        this._isMounted = false;
     }
 
+    //Update/display the table after modification
+    componentDidUpdate = () => {
+        this._isMounted = true;
+        this.populateCustomerData()
+    }
+
+    //Fetch data from the backend
+    populateCustomerData = () => {
+        axios.get("/api/customer")
+            .then(result => {
+                if (this._isMounted) {
+                    const response = result.data;
+                    this.setState({ customer: response, loading: false, failed: false, error: "" });
+                }
+            })
+            .catch(error => {
+                this.setState({ customer: [], loading: false, failed: true, error: "Customer data could not be loaded" });
+            });
+    }
 
     // This will handle the input area to reflect the user's input value
-    onChangeName = (e) => this.setState({name: e.target.value }); 
-
-    onChangeAddress = (e) => { this.setState({ address: e.target.value});}
+    onChangeName = (e) => {
+        e.preventDefault();
+        this.setState({ name: e.target.value });
+    }
+    onChangeAddress = (e) => {
+        e.preventDefault();
+        this.setState({ address: e.target.value });
+    }
 
     //Cancel the operation
     onCancel = (e) => { 
         this.setState({createshowModal:false, editshowModal:false, deleteshowModal:false, id:0, name:'', address:''})
     }
 
-    onCreateModalClose = () => this.setState({createshowModal:false})
-    
-    //Update/display the table after modification
-    componentDidUpdate =() => {this.populateCustomerData()}
-    
     //Add new data
-    onCreate=(e)=>{
+    onCreate=(e)=> {
         e.preventDefault();
         this.setState({createshowModal:false, name:'', address:''})
 
         let customerObject = { 
             Name: this.state.name,
             Address: this.state.address,      
-        }
-    
+        } 
         axios.post("/api/customer/postcustomer", customerObject)      
         this.componentDidUpdate();
-        //console.log(customerObject);
     }
+
     // Edit data
     onUpdate = (id) => {
         let custObject = {
@@ -84,30 +100,16 @@ export class Customer extends Component
     }
 
     //Delete Data
-    onDeleteConfirmation(id){
+    onDeleteConfirmation =(id) => {
         axios.delete("/api/customer/deletecustomer/"+ id)
         this.componentDidUpdate()
         this.setState({deleteshowModal:false, name:'', address:''});        
     }
     
-    //Fetch data from the backend
-     populateCustomerData(){
-        axios.get("/api/custmer")
-            .then(result => {
-                if (this._isMounted){
-                    const response = result.data;
-                    this.setState({customer: response, loading: false, failed: false, error:""});
-                }
-            })
-            .catch(error => {
-                this.setState({customer: [], loading: false, failed: true, error:"Customer data could not be loaded"});
-            });       
-    }
-
-    //Sorting -- Issue on 
+   
+    //Sorting -
     handleSort = (clickedColumn) => {
         const { customer, direction } = this.state
-        console.log('last customer', customer) //remove this
         this.setState({direction:'asc'})
 
         let copydata = [...customer];
@@ -116,72 +118,64 @@ export class Customer extends Component
             ? _.orderBy(copydata, clickedColumn, 'asc')
             : _.orderBy(copydata, clickedColumn, 'desc')
 
-        console.log('sorting', sortedcustomer, clickedColumn, direction) //remove this
-
         this.setState({ 
-            //customer:[],
             customer:sortedcustomer,
             direction: direction === 'asc'? 'desc' : 'asc',
             column:clickedColumn
         })
-        console.log('after setState', customer, direction) //remove this     
     }
    
     render(){
-
+            const { createshowModal, editshowModal, deleteshowModal, name, address, id, direction } = this.state;
+            const { onChangeName, onChangeAddress, onCreate, onUpdate, onCancel, onDeleteConfirmation } = this;
             let customerList = this.state.customer;
             let content = null;
             
             if(customerList !== ''){
                 content = customerList.map(cust => (
-                        <Table.Row key={cust.id}>
-                            <Table.Cell>{cust.name}</Table.Cell>
-                            <Table.Cell>{cust.address}</Table.Cell>
-                            <Table.Cell>
-                                {/* Edit modal                                */}
-                                <Modal size="small"
-                                    onClose={() => this.editshowModal()} open={this.state.editshowModal}
-                                    trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true, id: cust.id, name: cust.name, address: cust.address })}><Icon className='edit' /> EDIT</Button>}   >
-                                    <Header content="Edit Customer" />
-                                    <Modal.Content>
-                                        <Form >
-                                            <Form.Input  label="Name" value={this.state.name} onChange={this.onChangeName}></Form.Input>
-                                            <Form.TextArea  label="Address" value={this.state.address} onChange={this.onChangeAddress}></Form.TextArea>
-                                        </Form>
-                                    </Modal.Content>
-                                    <Modal.Actions>
-                                        <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                        <Button color="green" onClick={() => this.onUpdate(this.state.id)}> <i className="icon check" />edit</Button>
-                                    </Modal.Actions>
-                                </Modal>                         
-                            </Table.Cell>
-                            <Table.Cell>
-                                {/* Delete modal */}
-                                <Modal as={Form} size="small"
-                                    onClose={this.deleteshowModal} open={this.state.deleteshowModal}
-                                    trigger={<Button color="red" onClick={() => this.setState({ deleteshowModal: true, id: cust.id })}><Icon className='trash alternate' /> DELETE</Button>}   >
-                                    <Header content="Delete customer" />
-                                    <Modal.Content>
-                                        <h4> Are you sure?</h4>
-                                    </Modal.Content>
-                                    <Modal.Actions>
-                                        <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                        <Button color="red" onClick={() => this.onDeleteConfirmation(this.state.id)}> <i className="icon delete" />delete</Button>
-                                    </Modal.Actions>
-                                </Modal>
-                            </Table.Cell>
-                        </Table.Row>
-                         )
-                 )
-                
+                    <Table.Row key={cust.id}>
+                        <Table.Cell>{cust.name}</Table.Cell>
+                        <Table.Cell>{cust.address}</Table.Cell>
+                        <Table.Cell>
+                            {/* Edit modal */}
+                            <Modal size="small"
+                                onClose={() => this.editshowModal()} open={editshowModal}
+                                trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true, id: cust.id, name: cust.name, address: cust.address })}><Icon className='edit' /> EDIT</Button>}   >
+                                <Header content="Edit Customer" />
+                                <Modal.Content>
+                                    <Form >
+                                        <Form.Input  label="Name" value={name} onChange={onChangeName}></Form.Input>
+                                        <Form.TextArea  label="Address" value={address} onChange={onChangeAddress}></Form.TextArea>
+                                    </Form>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                    <Button color="green" onClick={() => onUpdate(id)}> <i className="icon check" />edit</Button>
+                                </Modal.Actions>
+                            </Modal>                         
+                        </Table.Cell>
+                        <Table.Cell>
+                            {/* Delete modal */}
+                            <Modal size="small"
+                                onClose={this.deleteshowModal} open={deleteshowModal}
+                                trigger={<Button color="red" onClick={() => this.setState({ deleteshowModal: true, id: cust.id })}><Icon className='trash alternate' /> DELETE</Button>}   >
+                                <Header content="Delete customer" />
+                                <Modal.Content>
+                                    <h4> Are you sure?</h4>
+                                </Modal.Content>
+                                <Modal.Actions>
+                                    <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                    <Button color="red" onClick={() => onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
+                                </Modal.Actions>
+                            </Modal>
+                        </Table.Cell>
+                    </Table.Row>
+                        )
+                 )            
             } 
-        
-        const { direction, name, address, createshowModal } = this.state;
-        const { onChangeName, onChangeAddress, onCancel, onCreate} = this;
           return (
             <React.Fragment>
-               
-
+ 
                {/* Create New customer Modal */}
                 <Modal size="small"   
                         onClose={this.createshowModal} open={createshowModal} 

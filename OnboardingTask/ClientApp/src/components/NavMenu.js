@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-//import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-//import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-//import './NavMenu.css';
+import './NavMenu.css';
 import 'semantic-ui-css/semantic.min.css';
 
 export class NavMenu extends Component {
@@ -31,19 +29,18 @@ export class NavMenu extends Component {
                   <Menu.Item as={NavLink} exact to='/'
                       name='home'
                   />
-                  <Menu.Item as={NavLink} to='/customer/customer'
+                  <Menu.Item as={NavLink} to='/customer'
                       name='customer'
                   />
-                  <Menu.Item as={NavLink} to='/product/product'
+                  <Menu.Item as={NavLink} to='/product'
                       name='product'
                   />
-                  <Menu.Item as={NavLink} to='/store/store'
+                  <Menu.Item as={NavLink} to='/store'
                       name='store'
                   />
-                  <Menu.Item as={NavLink} to='/sales/sales'
+                  <Menu.Item as={NavLink} to='/sales'
                       name='sales'
                   />
-
 
                </div>
           </div>

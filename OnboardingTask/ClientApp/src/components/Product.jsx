@@ -8,6 +8,7 @@ import _ from 'lodash'
 export class Product extends Component
 {
     _isMounted = false;
+
     constructor(props){
         super(props);
 
