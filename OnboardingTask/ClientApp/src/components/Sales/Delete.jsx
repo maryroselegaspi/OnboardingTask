@@ -20,9 +20,11 @@ export class Delete extends Component
         this.setState({ deleteshowModal:false,})
     }
 
+
     //Delete Data
-    onDeleteConfirmation = (id) => {
-        axios.delete("/api/customer/deletecustomer/" + id)
+    onDeleteConfirmation(id) {
+
+        axios.delete("/api/sales/deletesales/" + id)
         this.setState({ deleteshowModal: false});
     }
 
@@ -31,19 +33,20 @@ export class Delete extends Component
         const {  onDeleteConfirmation, onCancel } = this;
           return (
              <div>
+
                   {/* Delete modal */}
                   <Modal size="small"
                       onClose={this.deleteshowModal} open={deleteshowModal}
                       trigger={<Button color="red" onClick={() => this.setState({ deleteshowModal: true})}><Icon className='trash alternate' /> DELETE</Button>}   >
-                      <Header content="Delete customer" />
+                      <Header content="Delete Sales" />
                       <Modal.Content>
                           <h4> Are you sure?</h4>
                       </Modal.Content>
                       <Modal.Actions>
-                          <Button color="black" onClick={() => onCancel()}>cancel</Button>
-                          <Button color="red" onClick={() => onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
+                          <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
+                          <Button color="red" onClick={() => this.onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
                       </Modal.Actions>
-                  </Modal>      
+                  </Modal>
             </div>
         );
     }

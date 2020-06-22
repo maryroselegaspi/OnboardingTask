@@ -9,6 +9,8 @@ import Moment from 'react-moment';
 import moment from 'moment/moment.js';
 //import 'moment/locale/au';
 
+import { Delete } from './Delete';
+
 
 
 
@@ -168,13 +170,13 @@ export class Sales extends Component {
         this.setState({ editshowModal: false, dateSold: null, customer: '', product: '', store: '' });
     }
 
-    //Delete Data
-    onDeleteConfirmation(id) {
+    ////Delete Data
+    //onDeleteConfirmation(id) {
 
-        axios.delete("/api/sales/deletesales/" + id)
-        this.componentDidUpdate();
-        this.setState({ deleteshowModal: false, customer: '', product: '', store: '', dateSold: null });
-    }
+    //    axios.delete("/api/sales/deletesales/" + id)
+    //    this.componentDidUpdate();
+    //    this.setState({ deleteshowModal: false, customer: '', product: '', store: '', dateSold: null });
+    //}
 
     // Fetch Data from the back-end
     populateStoreData() {
@@ -244,20 +246,8 @@ export class Sales extends Component {
                             </Modal.Actions>
                         </Modal>
                     </td>
-                    <td>
-                        {/* Delete modal */}
-                        <Modal size="small"
-                            onClose={this.deleteshowModal} open={deleteshowModal}
-                            trigger={<Button color="red" onClick={() => this.setState({ deleteshowModal: true, id: sto.id })}><Icon className='trash alternate' /> DELETE</Button>}   >
-                            <Header content="Delete Sales" />
-                            <Modal.Content>
-                                <h4> Are you sure?</h4>
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="red" onClick={() => this.onDeleteConfirmation(this.state.id)}> <i className="icon delete" />delete</Button>
-                            </Modal.Actions>
-                        </Modal>
+                    <td> <Delete id={sto.id}/>
+                       
                     </td>
                 </tr>
             ))
