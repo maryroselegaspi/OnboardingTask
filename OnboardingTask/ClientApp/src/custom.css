@@ -1,0 +1,54 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.center{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+
+  .modal {
+    height: auto;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+
+}
+.dateInput{
+  width: 200px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  margin: auto;
+  /* background-color: black;
+  color: white; */
+
+}
+
+/* table{
+    height: auto;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+} */
+.container{
+  margin: auto;
+  width: 100%;
+  
+}
