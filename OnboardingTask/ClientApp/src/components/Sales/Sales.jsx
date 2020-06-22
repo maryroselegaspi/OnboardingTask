@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Modal, Form, Button, Header, Icon, Table } from "semantic-ui-react";
+import { Modal, Form, Button, Header, Table } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import _ from 'lodash'
-//import { DateInput } from 'semantic-ui-calendar-react';
-
 import Moment from 'react-moment';
 import moment from 'moment/moment.js';
-//import 'moment/locale/au';
 
 import { Delete } from './Delete';
+import { Edit } from './Edit';
 
 
 
@@ -46,76 +44,76 @@ export class Sales extends Component {
     }
     //Connect  to the server
     componentDidMount = () => {
-        this._isMounted = true;
-        this.populateStoreData();
-        this.getCustomerData();
-        this.getStoreData();
-        this.getProductData();
+        this._isMounted = true
+        this.populateStoreData()
+        //this.getCustomerData();
+        //this.getStoreData();
+        //this.getProductData();
     }
     componentWillUnmount() {
         this._isMounted = false;
     }
 
-    //for options customer data
-    getCustomerData = () => {
-        axios.get("api/customer")
-            .then(result => {
-                if (this._isMounted) {
-                    let response = result.data
-                        .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
-                        .map(res => { return { key: res.id, value: res.id, text: res.name } })
+    ////for options customer data
+    //getCustomerData = () => {
+    //    axios.get("api/customer")
+    //        .then(result => {
+    //            if (this._isMounted) {
+    //                let response = result.data
+    //                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
+    //                    .map(res => { return { key: res.id, value: res.id, text: res.name } })
 
-                    this.setState({
-                        customerData: [{ value: '', display: '!!' }].concat(response),
-                        failed: false, error: "",
-                        loading: false,
-                    });
-                }
-            })
-            .catch(error => {
-                this.setState({ customerData: [], loading: false, failed: true, error: "Customer data could not be loaded" });
-            });
-    }
-    //for options store data
-    getStoreData = () => {
-        axios.get("api/store").then(result => {
-            if (this._isMounted) {
-                let response = result.data
-                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
-                    .map(res => { return { key: res.id, value: res.id, text: res.name } })
+    //                this.setState({
+    //                    customerData: [{ value: '', display: '!!' }].concat(response),
+    //                    failed: false, error: "",
+    //                    loading: false,
+    //                });
+    //            }
+    //        })
+    //        .catch(error => {
+    //            this.setState({ customerData: [], loading: false, failed: true, error: "Customer data could not be loaded" });
+    //        });
+    //}
+    ////for options store data
+    //getStoreData = () => {
+    //    axios.get("api/store").then(result => {
+    //        if (this._isMounted) {
+    //            let response = result.data
+    //                .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
+    //                .map(res => { return { key: res.id, value: res.id, text: res.name } })
 
-                this.setState({
-                    storeData: [{ value: '', display: '!!' }].concat(response),
-                    loading: false,
-                    failed: false,
-                    error: ""
-                });
-            }
-        })
-            .catch(error => {
-                this.setState({ storeData: [], loading: false, failed: true, error: "Store data could not be loaded" });
-            });
-    }
-    //for options product data
-    getProductData = () => {
-        axios.get("api/product").then(result => {
-            if (this._isMounted) {
-                const response = result.data
-                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
-                    .map(res => { return { key: res.id, value: res.id, text: res.name } })
+    //            this.setState({
+    //                storeData: [{ value: '', display: '!!' }].concat(response),
+    //                loading: false,
+    //                failed: false,
+    //                error: ""
+    //            });
+    //        }
+    //    })
+    //        .catch(error => {
+    //            this.setState({ storeData: [], loading: false, failed: true, error: "Store data could not be loaded" });
+    //        });
+    //}
+    ////for options product data
+    //getProductData = () => {
+    //    axios.get("api/product").then(result => {
+    //        if (this._isMounted) {
+    //            const response = result.data
+    //                .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
+    //                .map(res => { return { key: res.id, value: res.id, text: res.name } })
 
-                this.setState({
-                    productData: [{ value: '', display: '!!' }].concat(response),
-                    loading: false,
-                    failed: false,
-                    error: ""
-                });
-            }
-        })
-            .catch(error => {
-                this.setState({ productData: [], loading: false, failed: true, error: "Product data could not be loaded" });
-            });
-    }
+    //            this.setState({
+    //                productData: [{ value: '', display: '!!' }].concat(response),
+    //                loading: false,
+    //                failed: false,
+    //                error: ""
+    //            });
+    //        }
+    //    })
+    //        .catch(error => {
+    //            this.setState({ productData: [], loading: false, failed: true, error: "Product data could not be loaded" });
+    //        });
+    //}
 
     // This will handle the input area to reflect the user's input value
     onChangeName = (e) => this.setState({ name: e.target.value });
@@ -154,21 +152,21 @@ export class Sales extends Component {
         this.componentDidUpdate();
     }
 
-    // Edit data
-    onUpdate = (id) => {
-        let object = {
-            DateSold: this.state.dateSold,
-            CustomerId: this.state.customer,
-            ProductId: this.state.product,
-            StoreId: this.state.store
-        }
+    //// Edit data
+    //onUpdate = (id) => {
+    //    let object = {
+    //        DateSold: this.state.dateSold,
+    //        CustomerId: this.state.customer,
+    //        ProductId: this.state.product,
+    //        StoreId: this.state.store
+    //    }
 
-        axios.put("api/sales/putsales/" + id, object)
-            .then(response => console.log(response.data))
-            .catch(error => console.log(error))
-        this.componentDidUpdate()
-        this.setState({ editshowModal: false, dateSold: null, customer: '', product: '', store: '' });
-    }
+    //    axios.put("api/sales/putsales/" + id, object)
+    //        .then(response => console.log(response.data))
+    //        .catch(error => console.log(error))
+    //    this.componentDidUpdate()
+    //    this.setState({ editshowModal: false, dateSold: null, customer: '', product: '', store: '' });
+    //}
 
     ////Delete Data
     //onDeleteConfirmation(id) {
@@ -179,7 +177,7 @@ export class Sales extends Component {
     //}
 
     // Fetch Data from the back-end
-    populateStoreData() {
+    populateStoreData =()=> {
         axios.get("api/sales")
             .then(result => {
                 if (this._isMounted) {
@@ -215,7 +213,7 @@ export class Sales extends Component {
     }
 
     render() {
-        const { editshowModal, deleteshowModal } = this.state;
+
         let dataList = this.state.salesdata;
         let content = null;
 
@@ -227,8 +225,17 @@ export class Sales extends Component {
                     <td>{sto.store.name}</td>
                     <td><Moment format="DD/MM/YYYY">{sto.dateSold}</Moment></td>
                     <td>
+                        <Edit
+                            id={sto.id}
+                            dateSold={moment(sto.dateSold).format("DD/MM/YYYY")}
+                            customer={sto.customer.id}
+                            product={sto.product.id}
+                            store={sto.store.id}
+ 
+                        />
+
                         {/* Edit modal  */}
-                        <Modal size="small"
+                        {/* <Modal size="small"
                             onClose={() => this.editshowModal} open={editshowModal}
                             trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true, id: sto.id, dateSold: moment(sto.dateSold).format("DD/MM/YYYY"), customer: sto.customer.id, product: sto.product.id, store: sto.store.id })}><Icon className='edit' /> EDIT</Button>}   >
                             <Header content="Edit Sales" />
@@ -244,7 +251,7 @@ export class Sales extends Component {
                                 <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
                                 <Button color="green" onClick={() => this.onUpdate(this.state.id)}> <i className="icon check" />edit</Button>
                             </Modal.Actions>
-                        </Modal>
+                        </Modal> */}
                     </td>
                     <td> <Delete id={sto.id}/>
                        

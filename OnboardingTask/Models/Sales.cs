@@ -11,7 +11,7 @@ namespace OnboardingTask.Models
         public int Id { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/mm/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{DD/MM/YYYY}")]
         [DisplayName("Date Sold")]
         [Required(ErrorMessage = "Date Sold is required")]
         public DateTime DateSold { get; set; }
