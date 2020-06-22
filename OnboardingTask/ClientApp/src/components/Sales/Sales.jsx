@@ -2,15 +2,9 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header, Icon, Table } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import _ from 'lodash'
-//import { DateInput } from 'semantic-ui-calendar-react';
-
+import _ from 'lodash';
 import Moment from 'react-moment';
 import moment from 'moment/moment.js';
-//import 'moment/locale/au';
-
-
-
 
 export class Sales extends Component
 {
@@ -39,7 +33,6 @@ export class Sales extends Component
             column: null,
             direction: null, 
         }
-
     }
     //Connect  to the server
     componentDidMount = ()=> {
