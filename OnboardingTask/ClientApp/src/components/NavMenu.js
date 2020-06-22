@@ -27,7 +27,7 @@ export class NavMenu extends Component {
           <div className="ui inverted segment" >
               <div className="ui inverted secondary pointing menu">
                   <Menu.Item as={NavLink} exact to='/'
-                      name='home'
+                      name='React'
                   />
                   <Menu.Item as={NavLink} to='/customer'
                       name='customer'

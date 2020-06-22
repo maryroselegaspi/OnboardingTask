@@ -31,8 +31,6 @@ namespace OnboardingTask.Controllers
                 .Include(s => s.Product)
                 .Include(s => s.Store)
                 .ToListAsync();
-
-
         }
 
         // GET: api/Sales/5

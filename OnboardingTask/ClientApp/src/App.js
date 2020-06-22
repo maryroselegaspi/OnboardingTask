@@ -3,10 +3,10 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import './custom.css'
-import { Customer } from './components/Customer';
- import { Product } from './components/Product';
- import { Store } from './components/Store';
- import { Sales } from './components/Sales';
+import { Customer } from './components/Customer/Customer';
+import { Product } from './components/Product/Product';
+import { Store } from './components/Store/Store';
+import { Sales } from './components/Sales/Sales';
 
 export default class App extends Component {
  static displayName = App.name;
