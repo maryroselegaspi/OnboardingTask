@@ -37,9 +37,7 @@ export class Sales extends Component
             deleteshowModal: false,
             error: '',
             column: null,
-            direction: null, // should always be null
-            nameError : 'Please enter product name',
-            priceError: "Please enter price in decimal format"
+            direction: null, 
         }
 
     }
@@ -112,13 +110,6 @@ export class Sales extends Component
         });
     }
 
-    // This will handle the input area to reflect the user's input value
-    onChangeName = (e) => this.setState({name: e.target.value }); 
-
-    onChangePrice = (e) => { this.setState({ price: e.target.value});}
-
-   
-
     //Cancel operation
     onCancel = (e) => { 
 
@@ -189,27 +180,23 @@ export class Sales extends Component
     //Sorting -- Issue on columns NOT Working  yet
     handleSort = (clickedColumn) => {
         const { store, direction } = this.state
-        console.log('last customer', store) //remove this
-        this.setState({direction:'asc'})
 
+        this.setState({direction:'asc'})
         let copydata = [...store];
 
         const sortedlist = (direction === 'asc')
             ? _.orderBy(copydata, clickedColumn, 'asc')
             : _.orderBy(copydata, clickedColumn, 'desc')
 
-        console.log('sorting', sortedlist, clickedColumn, direction) //remove this
-
         this.setState({ 
             store: sortedlist,
             direction: direction === 'asc'? 'desc' : 'asc',
             column:clickedColumn
         })
-        console.log('after setState', store, direction) //remove this     
     }
 
     render(){
-        const {editshowModal, deleteshowModal} = this.state;
+        const {editshowModal, deleteshowModal, customer, product, store, dateSold, customerData, productData, storeData, id} = this.state;
         let dataList = this.state.salesdata;
         let content = null;
             
@@ -228,10 +215,10 @@ export class Sales extends Component
                             <Header content="Edit Sales" />
                             <Modal.Content>
                                 <Form >     
-                                    <Form.Input className="dateInput" label = "Date" name='date'   placeholder="Select Date" value={this.state.dateSold } onChange={(event, {name, value})=> this.setState({dateSold:value})}></Form.Input>
-                                    <Form.Select  label="Customer"   placeholder="Select Customer"  value={this.state.customer} options={this.state.customerData} onChange={(event, {name,value}) => this.setState({customer:value})}/>
-                                    <Form.Select  label="Product"   placeholder="Select Product"  value={this.state.product} options={this.state.productData} onChange={(event, {name,value}) => this.setState({product:value})}/>
-                                    <Form.Select  label="Store"   placeholder="Select Store"  value={this.state.store} options={this.state.storeData} onChange={(event, {name,value}) => this.setState({store:value})}/>    
+                                    <Form.Input className="dateInput" label = "Date" name='date'   placeholder="Select Date" value={dateSold } onChange={(event, {name, value})=> this.setState({dateSold:value})}></Form.Input>
+                                    <Form.Select  label="Customer"   placeholder="Select Customer"  value={customer} options={customerData} onChange={(event, {name,value}) => this.setState({customer:value})}/>
+                                    <Form.Select  label="Product"   placeholder="Select Product"  value={product} options={productData} onChange={(event, {name,value}) => this.setState({product:value})}/>
+                                    <Form.Select  label="Store"   placeholder="Select Store"  value={store} options={storeData} onChange={(event, {name,value}) => this.setState({store:value})}/>    
                                 </Form>
                             </Modal.Content>
                             <Modal.Actions>
@@ -242,7 +229,7 @@ export class Sales extends Component
                     </td>
                     <td>
                         {/* Delete modal */}
-                        <Modal as={Form}  size="small" 
+                        <Modal  size="small" 
                             onClose={this.deleteshowModal} open={deleteshowModal} 
                             trigger={<Button color="red"  onClick={()=> this.setState({deleteshowModal:true, id:sto.id})}><Icon className='trash alternate' /> DELETE</Button>}   >
                             <Header content="Delete Sales" />
@@ -251,7 +238,7 @@ export class Sales extends Component
                             </Modal.Content>
                             <Modal.Actions>
                                 <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="red" onClick={() => this.onDeleteConfirmation(this.state.id)}> <i className="icon delete" />delete</Button>
+                                <Button color="red" onClick={() => this.onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
                             </Modal.Actions>
                         </Modal>           
                     </td>
@@ -272,9 +259,9 @@ export class Sales extends Component
                         <Modal.Content>
                             <Form >
                                 <Form.Input className="dateInput" label="Date" type="date" name="date" value={this.state.dateSold ||""} placeholder={this.state.dateSold} onChange={(event, {name, value})=> this.setState({dateSold:value})}></Form.Input>
-                                <Form.Select  label="Customer"   placeholder={this.state.customer}  value={this.state.customer} options={this.state.customerData} onChange={(event, {name,value}) => this.setState({customer:value})}/>
-                                <Form.Select  label="Product"   placeholder={this.state.product}  value={this.state.product} options={this.state.productData} onChange={(event, {name,value}) => this.setState({product:value})}/>
-                                <Form.Select  label="Store"   placeholder={this.state.store}  value={this.state.store} options={this.state.storeData} onChange={(event, {name,value}) => this.setState({store:value})}/>    
+                                <Form.Select  label="Customer"   placeholder={"Select Customer"}  value={this.state.customer} options={this.state.customerData} onChange={(event, {name,value}) => this.setState({customer:value})}/>
+                                <Form.Select  label="Product"   placeholder={"Select Product"}  value={this.state.product} options={this.state.productData} onChange={(event, {name,value}) => this.setState({product:value})}/>
+                                <Form.Select  label="Store"   placeholder={"Select Store"}  value={this.state.store} options={this.state.storeData} onChange={(event, {name,value}) => this.setState({store:value})}/>    
                             </Form>
                         </Modal.Content>
                         <Modal.Actions>
