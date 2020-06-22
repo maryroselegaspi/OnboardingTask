@@ -37,7 +37,7 @@ export class Sales extends Component
     //Connect  to the server
     componentDidMount = ()=> {
         this._isMounted = true;
-        this.populateStoreData();
+        this.populateData();
         this.getCustomerData();
         this.getStoreData();
         this.getProductData();
@@ -105,14 +105,13 @@ export class Sales extends Component
 
     //Cancel operation
     onCancel = (e) => { 
-
         this.setState({createshowModal:false, editshowModal:false, deleteshowModal:false, id:0, customer:'', product:'', store:'', dateSold:null})
     }
 
     //Update/display the table after modification
     componentDidUpdate =() => {
         this._isMounted = true;
-        this.populateStoreData()}
+        this.populateData()}
     
     //Add new data
     onCreate=(e)=>{
@@ -153,11 +152,11 @@ export class Sales extends Component
         
         axios.delete("/api/sales/deletesales/"+ id)
         this.componentDidUpdate();
-        this.setState({deleteshowModal:false,customer:'', product:'', store:'',dateSold:null});       
+        this.setState({deleteshowModal:false,customer:'', product:'', store:'', dateSold:null});       
     }
     
     // Fetch Data from the back-end
-    populateStoreData(){
+    populateData(){
         axios.get("api/sales")
             .then(result => {
                 if(this._isMounted){

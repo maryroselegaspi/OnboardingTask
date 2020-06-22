@@ -23,7 +23,7 @@ export class Store extends Component
             deleteshowModal: false,
             error: '',
             column: null,
-            direction: null, // should always be null
+            direction: null, 
         }
 
     }
@@ -48,7 +48,10 @@ export class Store extends Component
     }
 
     //Update/display the table after modification
-    componentDidUpdate =() => {this.populateStoreData()}
+    componentDidUpdate = () => {
+        this._isMounted = true;
+        this.populateStoreData();
+    }
     
     //Add new data
     onCreate=(e)=>{
@@ -67,21 +70,19 @@ export class Store extends Component
     
     // Edit data
     onUpdate = (id) => {
-        //e.preventDefault();
         let object = {
             Name: this.state.name,
             Address: this.state.address,
         }
 
         axios.put("api/store/putstore/"+ id, object)  
-            this.componentDidUpdate()
+            this.componentDidUpdate();
             this.setState({editshowModal:false, name:'', address:''});
-
     }
 
     //Delete Data
-    onDeleteConfirmation(id){
-        axios.delete("/api/store/deletestore/"+ id)
+    onDeleteConfirmation =(id) => {
+        axios.delete("/api/store/deletestore/" + id)
         this.componentDidUpdate();
         this.setState({deleteshowModal:false, name:'', address:''});       
     }
@@ -96,14 +97,14 @@ export class Store extends Component
                     this.setState({store: response, loading: false, failed: false, error:""});
                 }
             })
-        .catch(error => {
+            .catch(error => {
             this.setState({store: [], loading: false, failed: true, error:"Store data could not be loaded"});
-        });
+            });
     }
-    //Sorting -- Issue on 
+    //Sorting -- 
     handleSort = (clickedColumn) => {
         const { store, direction } = this.state
-        console.log('last customer', store) //remove this
+
         this.setState({direction:'asc'})
 
         let copydata = [...store];
@@ -112,20 +113,16 @@ export class Store extends Component
             ? _.orderBy(copydata, clickedColumn, 'asc')
             : _.orderBy(copydata, clickedColumn, 'desc'));
 
-        console.log('sorting', sortedlist, clickedColumn, direction); //remove this
-
         this.setState({ 
-            //store:[],
             store: sortedlist,
             direction: direction === 'asc'? 'desc' : 'asc',
             column:clickedColumn,
-        }, () => {console.log('after setState', store, direction)}
-        )
-         //remove this     
+        })
     }
    
     render(){
-  
+        const { editshowModal, deleteshowModal, name, address, id} = this.state;
+        const { onChangeName, onChangeAddress, onCreate, onUpdate, onCancel, onDeleteConfirmation} = this;
         let storeList = this.state.store;
         let content = null;
             
@@ -135,35 +132,35 @@ export class Store extends Component
                     <td>{sto.name}</td>
                     <td>{sto.address}</td>
                     <td>
-                        {/* Edit modal                                */}
+                        {/* Edit modal */}
                         <Modal size="small" 
-                                onClose={()=>this.editshowModal()} open={this.state.editshowModal} 
+                                onClose={()=>this.editshowModal()} open={editshowModal} 
                             trigger={<Button color="yellow"  onClick={()=> this.setState({editshowModal:true, id:sto.id, name:sto.name, address:sto.address})}><Icon className='edit' /> EDIT</Button>}   >
                             <Header content="Edit Store" />
                             <Modal.Content>
                                 <Form >
-                                    <Form.Input  label="Name"  value={this.state.name} onChange={this.onChangeName}></Form.Input>
-                                    <Form.TextArea label="Address"  value={this.state.address} onChange={this.onChangeAddress}></Form.TextArea>
+                                    <Form.Input  label="Name"  value={name} onChange={onChangeName}></Form.Input>
+                                    <Form.TextArea label="Address"  value={address} onChange={onChangeAddress}></Form.TextArea>
                                 </Form>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="green" onClick={()=>this.onUpdate(this.state.id)}> <i className="icon check" />edit</Button>
+                                <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                <Button color="green" onClick={()=> onUpdate(id)}> <i className="icon check" />edit</Button>
                             </Modal.Actions>
                         </Modal>                           
                     </td>
                     <td>
                         {/* Delete modal */}
-                        <Modal as={Form}  size="small" 
-                            onClose={this.deleteshowModal} open={this.state.deleteshowModal} 
+                        <Modal size="small" 
+                            onClose={this.deleteshowModal} open={deleteshowModal} 
                             trigger={<Button color="red"  onClick={()=> this.setState({deleteshowModal:true, id:sto.id})}><Icon className='trash alternate' /> DELETE</Button>}   >
                             <Header content="Delete store" />
                             <Modal.Content>
                                 <h4> Are you sure?</h4>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="red" onClick={() => this.onDeleteConfirmation(this.state.id)}> <i className="icon delete" />delete</Button>
+                                <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                <Button color="red" onClick={() => onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
                             </Modal.Actions>
                         </Modal>           
                     </td>
@@ -187,8 +184,8 @@ export class Store extends Component
                             </Form>
                         </Modal.Content>
                         <Modal.Actions>
-                            <Button color="black" onClick={() =>this.onCancel()}>cancel</Button>
-                            <Button color="green" onClick={(e)=>this.onCreate(e)}> create   <i className=" icon check" /></Button>
+                            <Button color="black" onClick={() =>onCancel()}>cancel</Button>
+                            <Button color="green" onClick={(e)=>onCreate(e)}> create   <i className=" icon check" /></Button>
                         </Modal.Actions>              
                 </Modal>
                
