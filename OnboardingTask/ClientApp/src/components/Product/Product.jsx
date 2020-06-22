@@ -12,7 +12,7 @@ export class Product extends Component
         super(props);
 
         this.state = {
-            store: [],
+            data: [],
             loading: true,
             failed: false,
             id:0,
@@ -23,56 +23,54 @@ export class Product extends Component
             deleteshowModal: false,
             error: '',
             column: null,
-            direction: null, // should always be null
-            nameError : 'Please enter product name',
-            priceError: "Please enter price in decimal format",
-
+            direction: null, 
         }
-        
     }
-    
 
     //Connect  to the server
     componentDidMount = ()=> {
         this._isMounted = true;
-        this.populateStoreData();       
+        this.populateData();       
     }
+
+    //Update/display the table after modification
+    componentDidUpdate = () => {
+        this._isMounted = true;
+        this.populateData();
+    }
+
+    //Unmont the component
     componentWillUnmount() {
         this._isMounted =false
     }
 
     // This will handle the input area to reflect the user's input value
-    onChangeName = (e) => this.setState({name: e.target.value }); 
-
-    onChangePrice = (e) => { this.setState({ price: e.target.value});}
+    onChangeName = (e) => {
+        e.preventDefault();
+        this.setState({ name: e.target.value })
+    }; 
+    onChangePrice = (e) => {
+        e.preventDefault();
+        this.setState({ price: e.target.value });
+    }
 
     //Cancel operation
     onCancel = (e) => { 
         this.setState({createshowModal:false, editshowModal:false, deleteshowModal:false, id:0, name:'', price:null})
     }
 
-    //Update/display the table after modification
-    componentDidUpdate =() => {this.populateStoreData()}
-    
     //Add new data
     onCreate=(e)=>{
         e.preventDefault();
         this.setState({createshowModal:false, name:'', price:null})
 
-        let storeObject = { 
+        let productObject = { 
             Name: this.state.name,
             Price: parseFloat(this.state.price),      
         }
-        console.log(storeObject)
-        console.log(typeof(storeObject.Price), typeof(storeObject.Name))
-    
-        axios.post("/api/product/postproduct", storeObject) 
-            .then(response => console.log(response.data))
-            .catch( error => console.log(error))
-        //this.setState({createshowModal:false, name:'', price:null})   
-        this.componentDidUpdate();
-        
- 
+
+        axios.post("/api/product/postproduct", productObject)  
+        this.componentDidUpdate(); 
     }
     
     // Edit data
@@ -84,102 +82,91 @@ export class Product extends Component
         }
 
         axios.put("api/product/putproduct/"+ id, object)  
-            .then(response => console.log(response.data))
-            .catch( error => console.log(error))
             this.componentDidUpdate()
             this.setState({editshowModal:false, name:'', price:null});
 
     }
 
     //Delete Data
-    onDeleteConfirmation(id){
-        
+    onDeleteConfirmation = (id) => {      
         axios.delete("/api/product/deleteproduct/"+ id)
         this.componentDidUpdate();
         this.setState({deleteshowModal:false, name:'', price:null});       
     }
     
     // Fetch Data from the back-end
-    async populateStoreData(){
+    populateData(){
+        axios.get("api/product").then(result => {
 
-        // const response = await axios.get("/api/product");
-        // const data =  response.data;
-        // this.setState({store: data, loading: false, failed: false, error:""});
-
-        await axios.get("api/product").then(result => {
             if(this._isMounted){
                 const response = result.data;
-                this.setState({store: response, loading: false, failed: false, error:""});
-            }
-            
+                this.setState({ data: response, loading: false, failed: false, error:""});
+            }        
         })
         .catch(error => {
-            this.setState({store: [], loading: false, failed: true, error:"Store data could not be loaded"});
+            this.setState({data: [], loading: false, failed: true, error:"Product data could not be loaded"});
         });
     }
-    //Sorting -- Issue on 
+    //Sorting -
     handleSort = (clickedColumn) => {
-        const { store, direction } = this.state
-        console.log('last customer', store) //remove this
-        this.setState({direction:'asc'})
+        const { data, direction } = this.state;
 
-        let copydata = [...store];
+        this.setState({ direction: 'asc' });
+
+        let copydata = [...data];
 
         const sortedlist = (direction === 'asc')
             ? _.orderBy(copydata, clickedColumn, 'asc')
             : _.orderBy(copydata, clickedColumn, 'desc')
 
-        console.log('sorting', sortedlist, clickedColumn, direction) //remove this
-
         this.setState({ 
- //           store:[],
-            store: sortedlist,
+            data: sortedlist,
             direction: direction === 'asc'? 'desc' : 'asc',
             column:clickedColumn
         })
-        console.log('after setState', store, direction) //remove this     
     }
    
     render(){
-  
-        let storeList = this.state.store;
+        const { editshowModal, createshowModal, deleteshowModal, name, price, id, direction} = this.state;
+        const { onCancel, onChangeName, onChangePrice, onUpdate, onDeleteConfirmation, onCreate} = this;
+        let productList = this.state.data;
         let content = null;
             
-        if(storeList !== ''){
-            content = storeList.map(sto => (
+        if (productList !== ''){
+            content = productList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.name}</td>
                     <td>{sto.price}</td>
                     <td>
-                        {/* Edit modal                                */}
+                        {/* Edit modal */}
                         <Modal size="small" 
-                                onClose={()=>this.editshowModal()} open={this.state.editshowModal} 
+                                onClose={()=>this.editshowModal()} open={editshowModal} 
                             trigger={<Button color="yellow"  onClick={()=> this.setState({editshowModal:true, id:sto.id, name:sto.name, price:sto.price})}><Icon className='edit' /> EDIT</Button>}   >
                             <Header content="Edit Product" />
                             <Modal.Content>
                                 <Form >
-                                    <Form.Input  label="Name"  value={this.state.name} onChange={this.onChangeName}></Form.Input>
-                                    <Form.Input  label="Price"  value={this.state.price} onChange={this.onChangePrice}></Form.Input>
+                                    <Form.Input  label="Name"  value={name} onChange={onChangeName}></Form.Input>
+                                    <Form.Input  label="Price"  value={price} onChange={onChangePrice}></Form.Input>
                                 </Form>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="green" onClick={()=>this.onUpdate(this.state.id)}> <i className="icon check" />edit</Button>
+                                <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                <Button color="green" onClick={()=>onUpdate(id)}> <i className="icon check" />edit</Button>
                             </Modal.Actions>
                         </Modal>                           
                     </td>
                     <td>
                         {/* Delete modal */}
-                        <Modal as={Form}  size="small" 
-                            onClose={this.deleteshowModal} open={this.state.deleteshowModal} 
+                        <Modal size="small" 
+                            onClose={this.deleteshowModal} open={deleteshowModal} 
                             trigger={<Button color="red"  onClick={()=> this.setState({deleteshowModal:true, id:sto.id})}><Icon className='trash alternate' /> DELETE</Button>}   >
                             <Header content="Delete product" />
                             <Modal.Content>
                                 <h4> Are you sure?</h4>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
-                                <Button color="red" onClick={() => this.onDeleteConfirmation(this.state.id)}> <i className="icon delete" />delete</Button>
+                                <Button color="black" onClick={() => onCancel()}>cancel</Button>
+                                <Button color="red" onClick={() => onDeleteConfirmation(id)}> <i className="icon delete" />delete</Button>
                             </Modal.Actions>
                         </Modal>           
                     </td>
@@ -187,9 +174,6 @@ export class Product extends Component
                 ))
             } 
         
-
-            const { direction, name, price, createshowModal } = this.state;
-            const { onChangeName, onChangePrice, onCancel, onCreate} = this;  
           return (
             <React.Fragment>
 
