@@ -27,7 +27,6 @@ namespace OnboardingTask.Models
         [StringLength(200)]
         public string Address { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<Sales> Sales { get; set; }
     }
 }

@@ -48,7 +48,9 @@ namespace OnboardingTask.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(18, 2)")
+                    .IsRequired();
             });
 
             modelBuilder.Entity<Sales>(entity =>
@@ -71,16 +73,6 @@ namespace OnboardingTask.Models
                     .WithMany(p => p.Sales)
                     .HasForeignKey(d => d.StoreId);
 
-
-                //entity.HasIndex("CustomerId");
-                //entity.HasIndex("ProductId");
-                //entity.HasIndex("StoreId");
-
-                //entity.HasOne(e => e.Customer.Name);
-                //entity.HasOne(e => e.Product.Name);
-                //entity.HasOne(e => e.Store.Name);
-
-                //entity.ToTable("Sales");
             });
 
             modelBuilder.Entity<Store>(entity =>

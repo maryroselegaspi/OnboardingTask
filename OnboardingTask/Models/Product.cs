@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-//using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace OnboardingTask.Models
@@ -25,12 +24,6 @@ namespace OnboardingTask.Models
         [Required(ErrorMessage = "Product Price is required")]
         public decimal Price { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<Sales> Sales { get; set; }
     }
-    //public class ProductsPaginated
-    //{
-    //    public List<Product> Products;
-    //    public int TotalPages;
-    //}
 }

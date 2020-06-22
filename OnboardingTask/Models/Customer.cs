@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-//using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace OnboardingTask.Models
@@ -24,12 +23,6 @@ namespace OnboardingTask.Models
         [StringLength(20)]
         public string Address { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<Sales> Sales { get; set; }
     }
-    //public class CustomersPaginated
-    //{
-    //    public List<Customer> Customers;
-    //    public int TotalPages;
-    //}
 }
