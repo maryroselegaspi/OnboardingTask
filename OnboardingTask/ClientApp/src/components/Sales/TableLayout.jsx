@@ -25,7 +25,6 @@ export class TableHeaderLayout extends Component {
         }
 
     }
-    //Connect  to the server
     componentDidMount = () => {
         this._isMounted = true;
  
@@ -51,8 +50,7 @@ export class TableHeaderLayout extends Component {
                 direction: direction === 'asc' ? 'desc' : 'asc',
                 column: clickedColumn
             })
-        }
-        
+        }      
     }
 
     render() {

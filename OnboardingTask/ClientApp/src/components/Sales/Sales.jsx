@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Table } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import _ from 'lodash'
 import { Create } from './Create';
 import { Delete } from './Delete';
 import { Edit } from './Edit';
@@ -26,15 +25,13 @@ export class Sales extends Component {
             product: '',
             store: '',
             error: '',
-            column: null,
-            direction: null,
         }
-
     }
-    //Connect  to the server
+
+    //Mount the component
     componentDidMount = () => {
         this._isMounted = true;
-        this.populateStoreData();
+        this.populateData();
     }
     componentWillUnmount() {
         this._isMounted = false;
@@ -43,11 +40,11 @@ export class Sales extends Component {
     //Update/display the table after modification
     componentDidUpdate = () => {
         this._isMounted = true;
-        this.populateStoreData()
+        this.populateData()
     }
 
     // Fetch Data from the back-end
-    populateStoreData() {
+    populateData() {
         axios.get("api/sales")
             .then(result => {
                 if (this._isMounted) {
@@ -56,25 +53,7 @@ export class Sales extends Component {
             })
             .catch(error => {
                 this.setState({ salesdata: [], loading: false, failed: true, error: "Store data could not be loaded" });
-            });
-
-        
-    }
-    //Sorting -
-    handleSort = (clickedColumn) => {
-        const { store, direction } = this.state
-        this.setState({ direction: 'asc' })
-        let copydata = [...store];
-
-        const sortedlist = (direction === 'asc')
-            ? _.orderBy(copydata, clickedColumn, 'asc')
-            : _.orderBy(copydata, clickedColumn, 'desc')
-
-        this.setState({
-            store: sortedlist,
-            direction: direction === 'asc' ? 'desc' : 'asc',
-            column: clickedColumn
-        })
+            });      
     }
 
     render() {
@@ -87,7 +66,9 @@ export class Sales extends Component {
                     <td>{sto.customer.name}</td>
                     <td>{sto.product.name}</td>
                     <td>{sto.store.name}</td>
-                    <td><Moment format="DD/MM/YYYY">{sto.datesold}</Moment></td>
+                    <td><Moment
+                        format="DD/MM/YYYY">{sto.datesold}</Moment>
+                    </td>
                     <td> <Edit
                         id={sto.id}
                         datesold={moment(sto.datesold).format("DD/MM/YYYY")}
@@ -104,6 +85,7 @@ export class Sales extends Component {
 
         return (
             <React.Fragment>
+
                 <Create />
 
                 {/* Table to display all data */}
@@ -114,6 +96,7 @@ export class Sales extends Component {
                         {content}
                     </Table.Body>
                 </Table>
+
             </React.Fragment>
 
         );
