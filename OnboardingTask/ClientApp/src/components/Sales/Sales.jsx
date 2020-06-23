@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//import { Modal, Form, Button, Header, Icon, Table } from "semantic-ui-react";
-import {Table } from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import _ from 'lodash'
-//import { DateInput } from 'semantic-ui-calendar-react';
 import { Create } from './Create';
 import { Delete } from './Delete';
 import { Edit } from './Edit';
 import Moment from 'react-moment';
 import moment from 'moment/moment.js';
-//import 'moment/locale/au';
-
-
-
+import { TableHeaderLayout } from './TableLayout';
 
 export class Sales extends Component {
     _isMounted = false;
@@ -113,36 +108,8 @@ export class Sales extends Component {
 
                 {/* Table to display all data */}
                 <Table className='sortable celled fixed'>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell
-                                className='sorted ascending'
-                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => this.handleSort('customer')}
-                            > Customer
-                            </Table.HeaderCell>
-                            <Table.HeaderCell
-                                className='sorted ascending'
-                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => this.handleSort('product')}
-                            > Product
-                            </Table.HeaderCell>
-                            <Table.HeaderCell
-                                className='sorted ascending'
-                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => this.handleSort('store')}
-                            > Store
-                            </Table.HeaderCell>
-                            <Table.HeaderCell
-                                className=''
-                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => this.handleSort('datesold')}
-                            >Date
-                            </Table.HeaderCell>
-                            <Table.HeaderCell>Action</Table.HeaderCell>
-                            <Table.HeaderCell>Action</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                    <TableHeaderLayout
+                        salesdata={this.state.salesdata} />
                     <Table.Body>
                         {content}
                     </Table.Body>
