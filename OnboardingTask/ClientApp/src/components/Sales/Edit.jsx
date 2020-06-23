@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { DateInput } from 'semantic-ui-calendar-react';
+//import { DateInput } from 'semantic-ui-calendar-react';
 import moment from 'moment/moment.js';
 
 export class Edit extends Component
@@ -19,7 +19,7 @@ export class Edit extends Component
             customer: this.props.customer,
             product: this.props.product,
             store: this.props.store,
-            dateSold: moment(this.props.dateSold).format("DD/MM/YYYY") ,
+            datesold: this.props.datesold,
             customerData: [],
             productData: [], 
             storeData: [], 
@@ -111,7 +111,7 @@ export class Edit extends Component
             customer: this.props.customer,
             product: this.props.product,
             store: this.props.store,
-            dateSold: this.props.dateSold
+            datesold: this.props.datesold
         })
     }
 
@@ -119,13 +119,12 @@ export class Edit extends Component
     // Edit data
     onUpdate = (id) => {
         let object = {
-            //DateSold: moment(this.state.dateSold).format("DD/MM/YYYY"),
-            DateSold: this.state.dateSold,
+            Datesold: moment(this.state.datesold, "DD-MM-YYYY").format("MM-DD-YYYYY"),
             CustomerId: this.state.customer,
             ProductId: this.state.product,
             StoreId: this.state.store
         }
-        console.log(object)
+        console.log(this.state.datesold)
 
         axios.put("api/sales/putsales/" + id, object)
            .then(response => alert(response.data))
@@ -135,20 +134,18 @@ export class Edit extends Component
 
     render() {
         
-            const {editshowModal, id, customer, product, store, dateSold, customerData, productData, storeData } = this.state;
+        const { editshowModal, id, customer, product, store, datesold, customerData, productData, storeData } = this.state;
             const { onUpdate, onCancel } = this;
           return (
              <div>
-                {/* Edit modal */}
-            
-
+                  {/* Edit modal  */}
                   <Modal size="small"
                       onClose={() => this.editshowModal} open={editshowModal}
                       trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true })}><Icon className='edit' /> EDIT</Button>}   >
                       <Header content="Edit Sales" />
                       <Modal.Content>
                           <Form >
-                              <DateInput className="dateInput"   dateFormat="DD/MM/YYYY" label="Date" name='date' iconPosition="right" placeholder={dateSold} value={dateSold} onChange={(event, { name, value }) => this.setState({ dateSold: value })}></DateInput>
+                              <Form.Input className="dateInput" label="Date" name='date' placeholder="Select Date" value={datesold} onChange={(event, { name, value }) => this.setState({ datesold: value })}></Form.Input>
                               <Form.Select label="Customer" placeholder="Select Customer" value={customer} options={customerData} onChange={(event, { name, value }) => this.setState({ customer: value })} />
                               <Form.Select label="Product" placeholder="Select Product" value={product} options={productData} onChange={(event, { name, value }) => this.setState({ product: value })} />
                               <Form.Select label="Store" placeholder="Select Store" value={store} options={storeData} onChange={(event, { name, value }) => this.setState({ store: value })} />

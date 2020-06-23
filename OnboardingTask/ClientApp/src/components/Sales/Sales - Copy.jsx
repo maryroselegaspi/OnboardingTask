@@ -1,92 +1,55 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//import { Modal, Form, Button, Header, Icon, Table } from "semantic-ui-react";
-import {Table } from "semantic-ui-react";
+import { Modal, Form, Button, Header, Icon, Table } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import _ from 'lodash'
-import Moment from 'react-moment';
+//import { DateInput } from 'semantic-ui-calendar-react';
 import { Create } from './Create';
 import { Delete } from './Delete';
-import { Edit } from './Edit';
+import Moment from 'react-moment';
 import moment from 'moment/moment.js';
-import { DateInput } from 'semantic-ui-calendar-react';
+//import 'moment/locale/au';
+
+
 
 
 export class Sales extends Component {
     _isMounted = false;
+
     constructor(props) {
         super(props);
 
         this.state = {
+            salesdata: [],
             loading: true,
             failed: false,
             name: '',
             id: 0,
             date: null,
             customer: '',
+            customerData: [],
             product: '',
+            productData: [],
             store: '',
-            dateSold: null,
+            storeData: [],
+            datesold: null,
+            editshowModal: false,
+            error: '',
             column: null,
             direction: null,
-            salesdata: [],
-            customerData: [],
-            productData: [],
-            storeData:[],
-
         }
 
     }
     //Connect  to the server
     componentDidMount = () => {
         this._isMounted = true;
-        this.populateData();
+        this.populateStoreData();
         this.getCustomerData();
         this.getStoreData();
         this.getProductData();
-
     }
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-
-    //Update/display the table after modification
-    componentDidUpdate = () => {
-        this._isMounted = true;
-        this.populateData()
-    }
-
-   
-    // Fetch Data from the back-end
-    populateData =()=> {
-        axios.get("api/sales")
-            .then(result => {
-                if (this._isMounted) {
-                    const response = result.data;
-                    this.setState({ salesdata: response, failed: false, error: "", loading: false });
-                }
-            })
-            .catch(error => {
-                this.setState({ salesdata: [], loading: false, failed: true, error: "Store data could not be loaded" });
-            });
-    }
-    //Sorting -
-    handleSort = (clickedColumn) => {
-        const { store, direction } = this.state
-        this.setState({ direction: 'asc' })
-
-        let copydata = [...store];
-
-        const sortedlist = (direction === 'asc')
-            ? _.orderBy(copydata, clickedColumn, 'asc')
-            : _.orderBy(copydata, clickedColumn, 'desc')
-
-        this.setState({
-            store: sortedlist,
-            direction: direction === 'asc' ? 'desc' : 'asc',
-            column: clickedColumn
-        })
     }
 
     //for options customer data
@@ -152,39 +115,72 @@ export class Sales extends Component {
 
     //Cancel operation
     onCancel = (e) => {
-        this.setState({
-            editshowModal: false,
-            customer: '',
-            product: '',
-            store: '',
-            dateSold: null,
-        })
+
+        this.setState({ createshowModal: false, editshowModal: false, deleteshowModal: false, id: 0, customer: '', product: '', store: '', datesold: null })
+    }
+
+    //Update/display the table after modification
+    componentDidUpdate = () => {
+        this._isMounted = true;
+        this.populateStoreData()
     }
 
 
     // Edit data
     onUpdate = (id) => {
         let object = {
-            //DateSold: moment(this.state.dateSold).format("DD/MM/YYYY"),
-            DateSold: this.state.dateSold,
+            Datesold: this.state.datesold,
             CustomerId: this.state.customer,
             ProductId: this.state.product,
             StoreId: this.state.store
-        }
-        console.log(object)
-
+        };
+        alert(this.state.datesold) //remove this
         axios.put("api/sales/putsales/" + id, object)
-            .then(response => alert(response.data))
-            .catch(error => alert(error))
-            .then(this.setState({ editshowModal: false, dateSold: null, customer: '', product: '', store: '' }));
+            .then(response => console.log(response.data))
+            .catch(error => console.log(error))
+        this.componentDidUpdate()
+        this.setState({ editshowModal: false, datesold: null, customer: '', product: '', store: '' });
     }
 
 
+    // Fetch Data from the back-end
+    populateStoreData() {
+        axios.get("api/sales")
+            .then(result => {
+                if (this._isMounted) {
+                    //const response = result.data;
+                    this.setState({ salesdata: result.data, failed: false, error: "", loading: false });
+                    //console.log("Date fetch:", { salesdata })
+                }
+
+            })
+            .catch(error => {
+                this.setState({ salesdata: [], loading: false, failed: true, error: "Store data could not be loaded" });
+            });
+
+
+    }
+    //Sorting -- Issue on columns NOT Working  yet
+    handleSort = (clickedColumn) => {
+        const { store, direction } = this.state
+        console.log('last customer', store) //remove this
+        this.setState({ direction: 'asc' })
+
+        let copydata = [...store];
+
+        const sortedlist = (direction === 'asc')
+            ? _.orderBy(copydata, clickedColumn, 'asc')
+            : _.orderBy(copydata, clickedColumn, 'desc')
+
+        this.setState({
+            store: sortedlist,
+            direction: direction === 'asc' ? 'desc' : 'asc',
+            column: clickedColumn
+        })
+    }
+
     render() {
-        const { direction } = this.state;
-        const { handleSort } = this;
-        //const { direction, editshowModal, id, customer, product, store, dateSold, customerData, productData, storeData } = this.state;
-        //const { onUpdate, onCancel, handleSort } = this;
+        const { editshowModal } = this.state;
         let dataList = this.state.salesdata;
         let content = null;
 
@@ -194,19 +190,28 @@ export class Sales extends Component {
                     <td>{sto.customer.name}</td>
                     <td>{sto.product.name}</td>
                     <td>{sto.store.name}</td>
-                    <td><Moment format="DD/MM/YYYY">{sto.dateSold}</Moment></td>
-                    <td> <Edit
-                        id={sto.id}
-                        customer={sto.customer.id}
-                        product={sto.product.id}
-                        store={sto.store.id}
-                    />
-                       
-
-
-                    
+                    <td><Moment format="DD/MM/YYYY">{sto.datesold}</Moment></td>
+                    <td>
+                        {/* Edit modal  */}
+                        <Modal size="small"
+                            onClose={() => this.editshowModal} open={editshowModal}
+                            trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true, id: sto.id, datesold: moment(sto.datesold).format("DD/MM/YYYY"), customer: sto.customer.id, product: sto.product.id, store: sto.store.id })}><Icon className='edit' /> EDIT</Button>}   >
+                            <Header content="Edit Sales" />
+                            <Modal.Content>
+                                <Form >
+                                    <Form.Input className="dateInput" label="Date" name='date' placeholder="Select Date" value={this.state.datesold} onChange={(event, { name, value }) => this.setState({ datesold: value })}></Form.Input>
+                                    <Form.Select label="Customer" placeholder="Select Customer" value={this.state.customer} options={this.state.customerData} onChange={(event, { name, value }) => this.setState({ customer: value })} />
+                                    <Form.Select label="Product" placeholder="Select Product" value={this.state.product} options={this.state.productData} onChange={(event, { name, value }) => this.setState({ product: value })} />
+                                    <Form.Select label="Store" placeholder="Select Store" value={this.state.store} options={this.state.storeData} onChange={(event, { name, value }) => this.setState({ store: value })} />
+                                </Form>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color="black" onClick={() => this.onCancel()}>cancel</Button>
+                                <Button color="green" onClick={() => this.onUpdate(this.state.id)}> <i className="icon check" />edit</Button>
+                            </Modal.Actions>
+                        </Modal>
                     </td>
-                    <td> <Delete id={sto.id}/>  </td>
+                    <td> <Delete id={sto.id} /></td>
                 </tr>
             ))
         }
@@ -221,26 +226,26 @@ export class Sales extends Component {
                         <Table.Row>
                             <Table.HeaderCell
                                 className='sorted ascending'
-                                sorted={direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => handleSort('customer')}
+                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
+                                onClick={() => this.handleSort('customer')}
                             > Customer
                             </Table.HeaderCell>
                             <Table.HeaderCell
                                 className='sorted ascending'
-                                sorted={direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => handleSort('product')}
+                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
+                                onClick={() => this.handleSort('product')}
                             > Product
                             </Table.HeaderCell>
                             <Table.HeaderCell
                                 className='sorted ascending'
-                                sorted={direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => handleSort('store')}
+                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
+                                onClick={() => this.handleSort('store')}
                             > Store
                             </Table.HeaderCell>
                             <Table.HeaderCell
                                 className=''
-                                sorted={direction === 'asc' ? 'ascending' : 'descending'}
-                                onClick={() => handleSort('dateSold')}
+                                sorted={this.state.direction === 'asc' ? 'ascending' : 'descending'}
+                                onClick={() => this.handleSort('datesold')}
                             >Date
                             </Table.HeaderCell>
                             <Table.HeaderCell>Action</Table.HeaderCell>
