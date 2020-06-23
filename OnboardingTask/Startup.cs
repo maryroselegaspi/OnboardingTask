@@ -30,7 +30,7 @@ namespace OnboardingTask
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddDbContext<OnboardingDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("OnboardingDBTask")));
+            services.AddDbContext<OnboardingDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
         }
