@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import moment from 'moment/moment.js';
 import { DateInput } from 'semantic-ui-calendar-react';
+import moment from 'moment/moment.js';
 
 export class Edit extends Component
 {
@@ -19,10 +19,10 @@ export class Edit extends Component
             customer: this.props.customer,
             product: this.props.product,
             store: this.props.store,
-            dateSold: this.props.dateSold,
-            customerData: [],//this.props.customerData,
-            productData: [], //this.props.productData,
-            storeData: [], //this.props.storeData,
+            dateSold: moment(this.props.dateSold).format("DD/MM/YYYY") ,
+            customerData: [],
+            productData: [], 
+            storeData: [], 
             editshowModal: false,  
             loading: true,
             name: '',
@@ -119,6 +119,7 @@ export class Edit extends Component
     // Edit data
     onUpdate = (id) => {
         let object = {
+            //DateSold: moment(this.state.dateSold).format("DD/MM/YYYY"),
             DateSold: this.state.dateSold,
             CustomerId: this.state.customer,
             ProductId: this.state.product,
@@ -147,7 +148,7 @@ export class Edit extends Component
                       <Header content="Edit Sales" />
                       <Modal.Content>
                           <Form >
-                              <DateInput className="dateInput" label="Date" name='date' iconPosition="right"bplaceholder={dateSold} value={dateSold || ''} onChange={(event, { name, value }) => this.setState({ dateSold: value })}></DateInput>
+                              <DateInput className="dateInput"   dateFormat="DD/MM/YYYY" label="Date" name='date' iconPosition="right" placeholder={dateSold} value={dateSold} onChange={(event, { name, value }) => this.setState({ dateSold: value })}></DateInput>
                               <Form.Select label="Customer" placeholder="Select Customer" value={customer} options={customerData} onChange={(event, { name, value }) => this.setState({ customer: value })} />
                               <Form.Select label="Product" placeholder="Select Product" value={product} options={productData} onChange={(event, { name, value }) => this.setState({ product: value })} />
                               <Form.Select label="Store" placeholder="Select Store" value={store} options={storeData} onChange={(event, { name, value }) => this.setState({ store: value })} />

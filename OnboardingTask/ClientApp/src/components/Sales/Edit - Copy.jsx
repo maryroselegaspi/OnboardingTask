@@ -1,38 +1,42 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { Modal, Form, Button, Header } from "semantic-ui-react";
+import { Modal, Form, Button, Header, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import { DateInput } from 'semantic-ui-calendar-react';
+import moment from 'moment/moment.js';
 
-export class Create extends Component
+export class Edit extends Component
 {
     _isMounted = false;
     constructor(props){
         super(props);
         
         this.state = {
-            loading: true,
             failed: false,
-            id:0,
+            id:this.props.id,
+            //name: this.props.name,
+            address: this.props.address,
+            customer: this.props.customer,
+            product: this.props.product,
+            store: this.props.store,
+            dateSold: this.props.dateSold,
+            customerData: [],
+            productData: [], 
+            storeData: [], 
+            editshowModal: false,  
+            loading: true,
             name: '',
-            date: null,
-            customer: '', 
-            product: '',
-            store: '',
-            dateSold: null,
-            createshowModal: false,
-            customerData: [],//this.props.customerData,
-            productData: [], //this.props.productData,
-            storeData: [], //this.props.storeData,
+            //id: 0,
+            error:'',
         }   
     }
-
     //Connect  to the server
     componentDidMount = () => {
         this._isMounted = true;
         this.getCustomerData();
         this.getStoreData();
         this.getProductData();
-
+        
     }
     componentWillUnmount() {
         this._isMounted = false;
@@ -98,55 +102,62 @@ export class Create extends Component
                 this.setState({ productData: [], loading: false, failed: true, error: "Product data could not be loaded" });
             });
     }
-
+  
     //Cancel operation
     onCancel = (e) => {
-        this.setState({ createshowModal: false, id: 0, customer: '', product: '', store: '', dateSold: null })
+        this.setState({
+            editshowModal: false,
+            id: this.props.id,
+            customer: this.props.customer,
+            product: this.props.product,
+            store: this.props.store,
+            dateSold: this.props.dateSold
+        })
     }
 
-    // Create new data
-    onCreate = (e) => {
-        e.preventDefault();
-        this.setState({ createshowModal: false, customer: '', product: '', store: '', dateSold: null })
 
-        let storeObject = {
-            Datesold: this.state.dateSold,
+    // Edit data
+    onUpdate = (id) => {
+        let object = {
+            DateSold: this.state.dateSold,
             CustomerId: this.state.customer,
             ProductId: this.state.product,
-            StoreId: this.state.store,
+            StoreId: this.state.store
         }
-        //alert("dates added to server: ",storeObject.Datesold)
-        axios.post("/api/sales/postsales", storeObject)
-            .catch(error => console.log(error))
-    }
- 
+        console.log(object)
 
-    render(){
-        const { createshowModal, customer, product, store, dateSold, customerData, productData, storeData } = this.state;
-            const { onCreate, onCancel } = this;
+        axios.put("api/sales/putsales/" + id, object)
+           .then(response => alert(response.data))
+          .catch(error => alert(error))
+          .then(this.setState({ editshowModal: false}));
+    }
+
+    render() {
+        
+            const {editshowModal, id, customer, product, store, dateSold, customerData, productData, storeData } = this.state;
+            const { onUpdate, onCancel } = this;
           return (
              <div>
+                {/* Edit modal */}
+            
 
-                  {/* Create Modal */}
                   <Modal size="small"
-                      onClose={this.createshowModal} open={createshowModal}
-                      trigger={<Button color="blue" onClick={() => this.setState({ createshowModal: true })}>New Sales</Button>}   >
-                      <Header content="Create Sales" />
+                      onClose={() => this.editshowModal} open={editshowModal}
+                      trigger={<Button color="yellow" onClick={() => this.setState({ editshowModal: true })}><Icon className='edit' /> EDIT</Button>}   >
+                      <Header content="Edit Sales" />
                       <Modal.Content>
                           <Form >
-                              <Form.Input className="dateInput" label="Date" type="date" name="date" value={dateSold ||''} placeholder={'Select Date'} onChange={(event, { name, value }) => this.setState({ dateSold: value })}></Form.Input>
-                              <Form.Select label="Customer" placeholder={"Select Customer"} value={customer} options={customerData} onChange={(event, { name, value }) => this.setState({ customer: value })} />
-                              <Form.Select label="Product" placeholder={"Select Product"} value={product} options={productData} onChange={(event, { name, value }) => this.setState({ product: value })} />
-                              <Form.Select label="Store" placeholder={"Select Store"} value={store} options={storeData} onChange={(event, { name, value }) => this.setState({ store: value })} />
+                              <DateInput className="dateInput"  dateFormat="DD/MM/YYYY" label="Date" name='date' iconPosition="right" placeholder={"Select Date"} value={moment(dateSold).format("DD/MM/YYYY")} onChange={(event, { name, value }) => this.setState({ dateSold: value })}></DateInput>
+                              <Form.Select label="Customer" placeholder="Select Customer" value={customer} options={customerData} onChange={(event, { name, value }) => this.setState({ customer: value })} />
+                              <Form.Select label="Product" placeholder="Select Product" value={product} options={productData} onChange={(event, { name, value }) => this.setState({ product: value })} />
+                              <Form.Select label="Store" placeholder="Select Store" value={store} options={storeData} onChange={(event, { name, value }) => this.setState({ store: value })} />
                           </Form>
                       </Modal.Content>
                       <Modal.Actions>
                           <Button color="black" onClick={() => onCancel()}>cancel</Button>
-                          <Button color="green" onClick={(e) => onCreate(e)}> create   <i className=" icon check" /></Button>
+                          <Button color="green" onClick={() => onUpdate(id)}> <i className="icon check" />edit</Button>
                       </Modal.Actions>
                   </Modal>
-
-                
             </div>
         );
     }

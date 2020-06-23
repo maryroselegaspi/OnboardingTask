@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+
 namespace OnboardingTask.Models
 {
     public partial class OnboardingDBContext : DbContext
@@ -48,31 +49,12 @@ namespace OnboardingTask.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Price)
-                    .HasColumnType("decimal(18, 2)")
-                    .IsRequired();
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             });
 
             modelBuilder.Entity<Sales>(entity =>
             {
-                entity.HasIndex(e => e.CustomerId);
-
-                entity.HasIndex(e => e.ProductId);
-
-                entity.HasIndex(e => e.StoreId);
-
-                entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.CustomerId);
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.ProductId);
-
-                entity.HasOne(d => d.Store)
-                    .WithMany(p => p.Sales)
-                    .HasForeignKey(d => d.StoreId);
-
+                entity.Property(e => e.Datesold).HasColumnType("date");
             });
 
             modelBuilder.Entity<Store>(entity =>

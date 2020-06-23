@@ -14,7 +14,7 @@ namespace OnboardingTask.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{DD/MM/YYYY}")]
         [DisplayName("Date Sold")]
         [Required(ErrorMessage = "Date Sold is required")]
-        public DateTime DateSold { get; set; }
+        public DateTime Datesold { get; set; }
 
         [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name id required")]
