@@ -53,7 +53,7 @@ export class Customer extends Component
 
     //Fetch data from the backend
     populateCustomerData = () => {
-        axios.get(this.API_URL+"api/customer")
+        axios.get(this.API_URL+"/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     const response = result.data;
