@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+//import Api from '../Api'
 
 export class Create extends Component
 {
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+   // API_URL = "https://mvpreactshop.azurewebsites.net";
     _isMounted = false;
     constructor(props){
         super(props);
@@ -24,7 +25,9 @@ export class Create extends Component
             customerData: [],//this.props.customerData,
             productData: [], //this.props.productData,
             storeData: [], //this.props.storeData,
+
         }   
+        //this.API_URL = new Api();
     }
 
     //Connect  to the server
@@ -41,7 +44,7 @@ export class Create extends Component
 
     //for options customer data
     getCustomerData = () => {
-        axios.get(this.API_URL + "/api/customer")
+        axios.get(this.props.API_URL + "/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     let response = result.data
@@ -61,7 +64,7 @@ export class Create extends Component
     }
     //for options store data
     getStoreData = () => {
-        axios.get( this.API_URL + "/api/store").then(result => {
+        axios.get(this.props.API_URL + "/api/store").then(result => {
             if (this._isMounted) {
                 let response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -81,7 +84,7 @@ export class Create extends Component
     }
     //for options product data
     getProductData = () => {
-        axios.get(this.API_URL + "/api/product").then(result => {
+        axios.get(this.props.API_URL + "/api/product").then(result => {
             if (this._isMounted) {
                 const response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -117,7 +120,7 @@ export class Create extends Component
             StoreId: this.state.store,
         }
         //alert("dates added to server: ",storeObject.Datesold)
-        axios.post(this.API_URL + "/api/sales/postsales", storeObject)
+        axios.post(this.props.API_URL + "/api/sales/postsales", storeObject)
             .catch(error => console.log(error))
     }
  

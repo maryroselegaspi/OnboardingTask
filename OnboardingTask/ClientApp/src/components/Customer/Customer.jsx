@@ -6,12 +6,15 @@ import _ from 'lodash'
 import { Edit } from './CustomerEdit';
 import { Delete } from './CustomerDelete';
 import { Create } from './CustomerCreate';
+//import Api from '../Api'
+import {api} from '../Api'
 
 
 export class Customer extends Component
 {
     _isMounted = false;
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    API_URL = api.API_URL;
+
     constructor(props){
         super(props);
         
@@ -19,14 +22,17 @@ export class Customer extends Component
             customer: [],
             loading: true,
             failed: false,
-            id:0,
-            name:'',
-            address:'',
+            id: 0,
+            name: '',
+            address: '',
             error: '',
             column: null,
-            direction: null, 
-        }   
+            direction: null,
+        };
+        
     }
+
+   
     
     //Connect  to the server
     componentDidMount = ()=> {
@@ -47,7 +53,7 @@ export class Customer extends Component
 
     //Fetch data from the backend
     populateCustomerData = () => {
-        axios.get(this.API_URL + "/api/customer")
+        axios.get(this.API_URL+"api/customer")
             .then(result => {
                 if (this._isMounted) {
                     const response = result.data;
@@ -88,14 +94,14 @@ export class Customer extends Component
                     <Table.Row key={cust.id}>
                         <Table.Cell>{cust.name}</Table.Cell>
                         <Table.Cell>{cust.address}</Table.Cell>
-                        <Table.Cell> <Edit id={cust.id} name={cust.name} address={cust.address} /> </Table.Cell>
-                        <Table.Cell> <Delete id={cust.id} /> </Table.Cell>
+                        <Table.Cell> <Edit id={cust.id} name={cust.name} address={cust.address} API_URL={this.API_URL}/> </Table.Cell>
+                        <Table.Cell> <Delete id={cust.id} API_URL={this.API_URL}/> </Table.Cell>
                     </Table.Row>
                  ))            
             } 
         return (
                 <React.Fragment>
-                    <Create />
+                <Create API_URL={this.API_URL} /> 
  
                     {/* Table to display all data */}                 
                     <Table className= 'sortable celled fixed'>

@@ -18,7 +18,7 @@ export default class App extends Component {
        <Route path='/customer' component = {Customer} />
        <Route path='/product' component = {Product} />
        <Route path='/store' component = {Store} />
-       <Route path='/sales' component = {Sales} />
+       <Route path='/sales' component = {Sales} /> 
 
      </Layout>
    );

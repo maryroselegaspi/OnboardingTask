@@ -6,12 +6,15 @@ import _ from 'lodash';
 import { Edit } from './Edit';
 import { Delete } from './Delete';
 import { Create } from './Create';
+import { api } from '../Api'
 
 
 export class Store extends Component
 {
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    //API_URL = "https://mvpreactshop.azurewebsites.net";
     _isMounted = false;
+    API_URL = api.API_URL;
+
     constructor(props){
         super(props);
 
@@ -26,7 +29,9 @@ export class Store extends Component
             column: null,
             direction: null, 
         }
+        //this.API_URL = new Api();
     }
+    //API_URL = api.API_URL;
     //Connect  to the server
     componentDidMount = ()=> {
         this._isMounted = true;
@@ -85,15 +90,15 @@ export class Store extends Component
                 <tr key={sto.id}>
                     <td>{sto.name}</td>
                     <td>{sto.address}</td>
-                    <td> <Edit id={sto.id} name={sto.name} address={sto.address} /> </td>
-                    <td> <Delete id={sto.id}/> </td>
+                    <td> <Edit id={sto.id} name={sto.name} address={sto.address} API_URL={this.API_URL}/> </td>
+                    <td> <Delete id={sto.id} API_URL={this.API_URL}/> </td>
                 </tr>
              ))
         } 
   
           return (
             <React.Fragment>
-                <Create />
+                  <Create API_URL={this.API_URL}/>
                
                   {/* Table to display all data */}     
                   

@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Button, Header, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+//import Api from '../Api'
 
 export class Delete extends Component
 {
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    //API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
         
@@ -14,6 +15,7 @@ export class Delete extends Component
             id:this.props.id,
             deleteshowModal: false,  
         }   
+        //this.API_URL = new Api();
     }
    
     //Cancel the operation
@@ -25,7 +27,7 @@ export class Delete extends Component
     //Delete Data
     onDeleteConfirmation =(id) =>{
 
-        axios.delete(this.API_URL + "/api/sales/deletesales/" + id)
+        axios.delete(this.props.API_URL + "/api/sales/deletesales/" + id)
         this.setState({ deleteshowModal: false});
     }
 

@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+//import Api from '../Api'
+
 
 export class Edit extends Component
 {
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    //API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
         
@@ -16,6 +18,7 @@ export class Edit extends Component
             address: this.props.address,
             editshowModal: false,  
         }   
+        //this.API_URL = new Api();
     }
     
     // This will handle the input area to reflect the user's input value
@@ -39,7 +42,7 @@ export class Edit extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.put(this.API_URL + "/api/customer/putcustomer/"+ id, custObject)
+        axios.put(this.props.API_URL + "/api/customer/putcustomer/"+ id, custObject)
             this.setState({editshowModal:false});
     }
 

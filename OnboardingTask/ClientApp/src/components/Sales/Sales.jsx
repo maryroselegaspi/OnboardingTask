@@ -8,10 +8,13 @@ import { Edit } from './Edit';
 import Moment from 'react-moment';
 import moment from 'moment/moment.js';
 import { TableHeaderLayout } from './TableLayout';
+import { api } from '../Api'
+
 
 export class Sales extends Component {
     _isMounted = false;
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    //API_URL = "https://mvpreactshop.azurewebsites.net";
+    API_URL = api.API_URL;
     constructor(props) {
         super(props);
 
@@ -26,7 +29,9 @@ export class Sales extends Component {
             store: '',
             error: '',
         }
+        //this.API_URL = new Api();
     }
+    //API_URL = api.API_URL
 
     //Mount the component
     componentDidMount = () => {
@@ -74,10 +79,12 @@ export class Sales extends Component {
                         datesold={moment(sto.datesold).format("DD/MM/YYYY")}
                         customer={sto.customer.id}
                         product={sto.product.id}
-                        store={sto.store.id} />
+                        store={sto.store.id} 
+                        API_URL={this.API_URL} />
                     </td> 
                     <td> <Delete
-                        id={sto.id} />
+                        id={sto.id}
+                        API_URL={this.API_URL}/>
                     </td>
                 </tr>
             ))
@@ -86,7 +93,7 @@ export class Sales extends Component {
         return (
             <React.Fragment>
 
-                <Create />
+                <Create API_URL={this.API_URL} />
 
                 {/* Table to display all data */}
                 <Table className='sortable celled fixed'>

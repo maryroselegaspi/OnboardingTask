@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Header } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+//import Api from '../Api'
 
 export class Create extends Component
 {
-    API_URL = "https://mvpreactshop.azurewebsites.net";
+    //API_URL = "https://mvpreactshop.azurewebsites.net";
     
     constructor(props){
         super(props);
@@ -17,6 +18,7 @@ export class Create extends Component
             address: '',
             createshowModal: false,  
         }   
+        //this.API_URL = new Api();
     }
     
     // This will handle the input area to reflect the user's input value
@@ -43,7 +45,7 @@ export class Create extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.post(this.API_URL + "/api/customer/postcustomer", customerObject)
+        axios.post(this.props.API_URL + "api/customer/postcustomer", customerObject)
     }
 
     render(){
