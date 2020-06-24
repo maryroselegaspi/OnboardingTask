@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'mvpreactshop'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_2a28f8516f6d44db8eeb9cc8f202b50e }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_dda8c4de058e4a8aa03fee5cb7e6aa9e }}
         package: ${{env.DOTNET_ROOT}}/myapp 
