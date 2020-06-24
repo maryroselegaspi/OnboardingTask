@@ -7,6 +7,7 @@ import moment from 'moment/moment.js';
 
 export class Edit extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     _isMounted = false;
     constructor(props){
         super(props);
@@ -44,7 +45,7 @@ export class Edit extends Component
 
     //for options customer data
     getCustomerData = () => {
-        axios.get("api/customer")
+        axios.get(this.API_URL + "/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     let response = result.data
@@ -64,7 +65,7 @@ export class Edit extends Component
     }
     //for options store data
     getStoreData = () => {
-        axios.get("api/store").then(result => {
+        axios.get(this.API_URL + "/api/store").then(result => {
             if (this._isMounted) {
                 let response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -84,7 +85,7 @@ export class Edit extends Component
     }
     //for options product data
     getProductData = () => {
-        axios.get("api/product").then(result => {
+        axios.get(this.API_URL + "/api/product").then(result => {
             if (this._isMounted) {
                 const response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -126,7 +127,7 @@ export class Edit extends Component
         }
         console.log(this.state.datesold)
 
-        axios.put("api/sales/putsales/" + id, object)
+        axios.put(this.API_URL + "/api/sales/putsales/" + id, object)
            .then(response => alert(response.data))
           .catch(error => alert(error))
           .then(this.setState({ editshowModal: false}));

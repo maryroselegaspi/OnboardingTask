@@ -10,6 +10,7 @@ import { Create } from './Create';
 
 export class Store extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     _isMounted = false;
     constructor(props){
         super(props);
@@ -44,7 +45,7 @@ export class Store extends Component
   
     // Fetch Data from the back-end
     populateStoreData(){
-        axios.get("api/store")
+        axios.get(this.API_URL+"/api/store")
             .then(result => {
 
                 if(this._isMounted){

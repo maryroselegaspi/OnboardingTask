@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Create extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
         
@@ -42,7 +43,7 @@ export class Create extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.post("/api/store/poststore", storeObject)
+        axios.post(this.API_URL + "/api/store/poststore", storeObject)
     }
     render(){
         const { createshowModal, name, address } = this.state;

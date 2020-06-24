@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Delete extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
         
@@ -22,7 +23,7 @@ export class Delete extends Component
 
     //Delete Data
     onDeleteConfirmation = (id) => {
-        axios.delete("/api/customer/deletecustomer/" + id)
+        axios.delete(this.API_URL + "/api/customer/deletecustomer/" + id)
         this.setState({ deleteshowModal: false});
     }
 

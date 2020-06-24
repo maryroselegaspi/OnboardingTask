@@ -11,7 +11,7 @@ import { TableHeaderLayout } from './TableLayout';
 
 export class Sales extends Component {
     _isMounted = false;
-
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props) {
         super(props);
 
@@ -45,7 +45,7 @@ export class Sales extends Component {
 
     // Fetch Data from the back-end
     populateData() {
-        axios.get("api/sales")
+        axios.get(this.API_URL+ "/api/sales")
             .then(result => {
                 if (this._isMounted) {
                     this.setState({ salesdata: result.data, failed: false, error: "", loading: false });

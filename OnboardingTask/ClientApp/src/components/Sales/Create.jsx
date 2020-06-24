@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Create extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     _isMounted = false;
     constructor(props){
         super(props);
@@ -40,7 +41,7 @@ export class Create extends Component
 
     //for options customer data
     getCustomerData = () => {
-        axios.get("api/customer")
+        axios.get(this.API_URL + "/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     let response = result.data
@@ -60,7 +61,7 @@ export class Create extends Component
     }
     //for options store data
     getStoreData = () => {
-        axios.get("api/store").then(result => {
+        axios.get( this.API_URL + "/api/store").then(result => {
             if (this._isMounted) {
                 let response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -80,7 +81,7 @@ export class Create extends Component
     }
     //for options product data
     getProductData = () => {
-        axios.get("api/product").then(result => {
+        axios.get(this.API_URL + "/api/product").then(result => {
             if (this._isMounted) {
                 const response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -116,7 +117,7 @@ export class Create extends Component
             StoreId: this.state.store,
         }
         //alert("dates added to server: ",storeObject.Datesold)
-        axios.post("/api/sales/postsales", storeObject)
+        axios.post(this.API_URL + "/api/sales/postsales", storeObject)
             .catch(error => console.log(error))
     }
  

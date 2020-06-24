@@ -10,7 +10,7 @@ import { Create } from './Create';
 export class Product extends Component
 {
     _isMounted = false;
-
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
 
@@ -46,7 +46,7 @@ export class Product extends Component
 
     // Fetch Data from the back-end
     populateData(){
-        axios.get("api/product").then(result => {
+        axios.get(this.API_URL + "/api/product").then(result => {
 
             if(this._isMounted){
                 const response = result.data;

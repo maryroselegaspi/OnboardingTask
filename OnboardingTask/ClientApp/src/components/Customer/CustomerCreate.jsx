@@ -5,7 +5,8 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Create extends Component
 {
-    API_URL = "https://mvpshop.azurewebsites.net/";
+    API_URL = "https://mvpreactshop.azurewebsites.net";
+    
     constructor(props){
         super(props);
         

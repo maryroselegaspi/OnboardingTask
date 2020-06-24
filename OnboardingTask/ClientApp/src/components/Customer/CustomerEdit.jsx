@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Edit extends Component
 {
+    API_URL = "https://mvpreactshop.azurewebsites.net";
     constructor(props){
         super(props);
         
@@ -38,7 +39,7 @@ export class Edit extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.put("api/customer/putcustomer/"+ id, custObject)
+        axios.put(this.API_URL + "/api/customer/putcustomer/"+ id, custObject)
             this.setState({editshowModal:false});
     }
 
