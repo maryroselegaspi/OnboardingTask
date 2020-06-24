@@ -5,6 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 
 export class Create extends Component
 {
+    API_URL = "https://mvpshop.azurewebsites.net/";
     constructor(props){
         super(props);
         
@@ -41,7 +42,7 @@ export class Create extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.post("/api/customer/postcustomer", customerObject)
+        axios.post(this.API_URL + "/api/customer/postcustomer", customerObject)
     }
 
     render(){
