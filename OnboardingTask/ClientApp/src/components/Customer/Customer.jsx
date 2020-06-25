@@ -53,18 +53,22 @@ export class Customer extends Component
 
     //Fetch data from the backend
     populateCustomerData = () => {
-        axios.get(this.API_URL+"/api/customer")
+        axios.get(this.API_URL + "/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     const response = result.data;
                     this.setState({ customer: response, loading: false, failed: false, error: "" });
+                    
                 }
             })
             .catch(error => {
                 this.setState({ customer: [], loading: false, failed: true, error: "Customer data could not be loaded" });
-            });
-    }
+            })
+            
+        
 
+    }
+   
 
     //Sorting -
     handleSort = (clickedColumn) => {
@@ -83,14 +87,18 @@ export class Customer extends Component
             column:clickedColumn
         })
     }
+    
    
-    render(){
+    render()
+    
+    {
             const { direction } = this.state;
-            let customerList = this.state.customer;
-            let content = null;
+        let  customerList  = [...this.state.customer];
+            let content = [];
             
             if(customerList !== ''){
                 content = customerList.map(cust => (
+                //content = Object.values(customerList).forEach((cust) => (
                     <Table.Row key={cust.id}>
                         <Table.Cell>{cust.name}</Table.Cell>
                         <Table.Cell>{cust.address}</Table.Cell>
