@@ -60,6 +60,8 @@ export class Customer extends Component
                     this.setState({ customer: response, loading: false, failed: false, error: "" });
                     
                 }
+
+                //console.log(this.state.customer);
             })
             .catch(error => {
                 this.setState({ customer: [], loading: false, failed: true, error: "Customer data could not be loaded" });
@@ -94,19 +96,21 @@ export class Customer extends Component
     {
             const { direction } = this.state;
         let  customerList  = [...this.state.customer];
-            let content = [];
+            //let content = [];
             
             if(customerList !== ''){
-                content = customerList.map(cust => (
-                //content = Object.values(customerList).forEach((cust) => (
+                var content = customerList.map(cust => (
+                    //content = Object.values(customerList).forEach((cust) => (
                     <Table.Row key={cust.id}>
                         <Table.Cell>{cust.name}</Table.Cell>
                         <Table.Cell>{cust.address}</Table.Cell>
-                        <Table.Cell> <Edit id={cust.id} name={cust.name} address={cust.address} API_URL={this.API_URL}/> </Table.Cell>
-                        <Table.Cell> <Delete id={cust.id} API_URL={this.API_URL}/> </Table.Cell>
+                        <Table.Cell> <Edit id={cust.id} name={cust.name} address={cust.address} API_URL={this.API_URL} /> </Table.Cell>
+                        <Table.Cell> <Delete id={cust.id} API_URL={this.API_URL} /> </Table.Cell>
                     </Table.Row>
-                 ))            
-            } 
+                )); 
+                //console.log("customerList:", customerList)
+        } 
+        
         return (
                 <React.Fragment>
                 <Create API_URL={this.API_URL} /> 
