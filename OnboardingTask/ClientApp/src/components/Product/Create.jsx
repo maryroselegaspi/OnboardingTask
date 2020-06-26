@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { Modal, Form, Button, Header, Message } from "semantic-ui-react";
+import { Modal, Form, Button, Header } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 //import Api from '../Api'

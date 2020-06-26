@@ -85,7 +85,7 @@ export class Store extends Component
         let storeList = this.state.store;
         //let content = null;
             
-        if(storeList !== ''){
+        if(storeList && storeList.length > 0){
             var content = storeList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.name}</td>

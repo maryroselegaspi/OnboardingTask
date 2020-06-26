@@ -65,7 +65,7 @@ export class Sales extends Component {
         let dataList = this.state.salesdata;
         //let content = null;
 
-        if (dataList !== '') {
+        if (dataList && dataList.length > 0) {
             var  content = dataList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.customer.name}</td>

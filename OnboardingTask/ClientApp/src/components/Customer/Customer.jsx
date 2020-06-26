@@ -102,9 +102,10 @@ export class Customer extends Component
             let customerList = this.state.customer;
             //let content = [];
             
-            if(customerList !== ''){
-                var content = customerList.map(cust => (
-                //content = customerList.forEach(cust => (
+        if (customerList && customerList.length>0) {
+            var content = customerList.map(cust => {
+                return (
+                    //content = customerList.forEach(cust => (
                     //content = Object.values(customerList).forEach((cust) => (
                     <Table.Row key={cust.id}>
                         <Table.Cell>{cust.name}</Table.Cell>
@@ -112,13 +113,13 @@ export class Customer extends Component
                         <Table.Cell> <Edit id={cust.id} name={cust.name} address={cust.address} API_URL={this.API_URL} /> </Table.Cell>
                         <Table.Cell> <Delete id={cust.id} API_URL={this.API_URL} /> </Table.Cell>
                     </Table.Row>
-                ));
+               )});
 
             
                 //console.log("customerList:", customerList)
         } 
             else {
-                alert('Error loading!')
+                //alert('Error loading!')
             }
         
         return (
