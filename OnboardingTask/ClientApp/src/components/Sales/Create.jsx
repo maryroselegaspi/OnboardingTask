@@ -44,7 +44,7 @@ export class Create extends Component
 
     //for options customer data
     getCustomerData = () => {
-        axios.get(this.props.API_URL + "/api/customer")
+        axios.get(this.props.API_URL + "api/customer")
             .then(result => {
                 if (this._isMounted) {
                     let response = result.data
@@ -64,7 +64,7 @@ export class Create extends Component
     }
     //for options store data
     getStoreData = () => {
-        axios.get(this.props.API_URL + "/api/store").then(result => {
+        axios.get(this.props.API_URL + "api/store").then(result => {
             if (this._isMounted) {
                 let response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -84,7 +84,7 @@ export class Create extends Component
     }
     //for options product data
     getProductData = () => {
-        axios.get(this.props.API_URL + "/api/product").then(result => {
+        axios.get(this.props.API_URL + "api/product").then(result => {
             if (this._isMounted) {
                 const response = result.data
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1)
@@ -120,7 +120,7 @@ export class Create extends Component
             StoreId: this.state.store,
         }
         //alert("dates added to server: ",storeObject.Datesold)
-        axios.post(this.props.API_URL + "/api/sales/postsales", storeObject)
+        axios.post(this.props.API_URL + "api/sales/postsales", storeObject)
             .catch(error => console.log(error))
     }
  

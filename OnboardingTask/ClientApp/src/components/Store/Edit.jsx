@@ -42,7 +42,7 @@ export class Edit extends Component
             Address: this.state.address,
         }
 
-        axios.put(this.props.API_URL+"/api/store/putstore/" + id, object)
+        axios.put(this.props.API_URL+"api/store/putstore/" + id, object)
         this.setState({ editshowModal: false });
     }
 

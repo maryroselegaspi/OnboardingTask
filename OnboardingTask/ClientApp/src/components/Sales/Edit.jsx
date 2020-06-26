@@ -47,7 +47,7 @@ export class Edit extends Component
 
     //for options customer data
     getCustomerData = () => {
-        axios.get(this.props.API_URL + "/api/customer")
+        axios.get(this.props.API_URL + "api/customer")
             .then(result => {
                 if (this._isMounted) {
                     let response = result.data

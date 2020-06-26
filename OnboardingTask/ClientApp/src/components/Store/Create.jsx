@@ -46,7 +46,7 @@ export class Create extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.post(this.props.API_URL + "/api/store/poststore", storeObject)
+        axios.post(this.props.API_URL + "api/store/poststore", storeObject)
     }
     render(){
         const { createshowModal, name, address } = this.state;

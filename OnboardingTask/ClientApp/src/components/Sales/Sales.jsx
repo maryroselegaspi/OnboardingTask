@@ -50,7 +50,7 @@ export class Sales extends Component {
 
     // Fetch Data from the back-end
     populateData() {
-        axios.get(this.API_URL+ "/api/sales")
+        axios.get(this.API_URL+ "api/sales")
             .then(result => {
                 if (this._isMounted) {
                     this.setState({ salesdata: result.data, failed: false, error: "", loading: false });

@@ -54,7 +54,7 @@ export class Customer extends Component
 
     //Fetch data from the backend
     populateCustomerData = () => {
-        axios.get(this.API_URL + "/api/customer")
+        axios.get(this.API_URL + "api/customer")
         //axios.get("/api/customer")
             .then(result => {
                 if (this._isMounted) {
@@ -118,9 +118,9 @@ export class Customer extends Component
             
                 //console.log("customerList:", customerList)
         } 
-            else {
-                //alert('Error loading!')
-            }
+            //else {
+            //    //alert('Error loading!')
+            //}
         
         return (
                 <React.Fragment>

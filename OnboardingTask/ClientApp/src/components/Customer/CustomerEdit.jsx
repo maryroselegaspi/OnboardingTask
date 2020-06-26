@@ -42,7 +42,7 @@ export class Edit extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.put(this.props.API_URL + "/api/customer/putcustomer/"+ id, custObject)
+        axios.put(this.props.API_URL + "api/customer/putcustomer/"+ id, custObject)
             this.setState({editshowModal:false});
     }
 

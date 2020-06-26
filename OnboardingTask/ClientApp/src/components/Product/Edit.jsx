@@ -43,7 +43,7 @@ export class Edit extends Component
             Price: parseFloat(this.state.price),
         }
 
-        axios.put(this.props.API_URL + "/api/product/putproduct/" + id, object)
+        axios.put(this.props.API_URL + "api/product/putproduct/" + id, object)
         this.setState({ editshowModal: false});
 
     }

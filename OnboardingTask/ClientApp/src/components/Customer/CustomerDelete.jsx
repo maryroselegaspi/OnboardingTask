@@ -25,7 +25,7 @@ export class Delete extends Component
 
     //Delete Data
     onDeleteConfirmation = (id) => {
-        axios.delete(this.props.API_URL + "/api/customer/deletecustomer/" + id)
+        axios.delete(this.props.API_URL + "api/customer/deletecustomer/" + id)
         this.setState({ deleteshowModal: false});
     }
 
