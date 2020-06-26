@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { Modal, Form, Button, Header } from "semantic-ui-react";
+import { Modal, Form, Button, Header, Message } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 //import Api from '../Api'
@@ -63,8 +63,14 @@ export class Create extends Component
                       <Header content="Create Product" />
                       <Modal.Content>
                           <Form >
-                              <Form.Input label="NAME" value={name || ""} placeholder='Product name' onChange={(e) => onChangeName(e)}></Form.Input>
-                              <Form.Input label="PRICE" value={price || ""} placeholder='10.00' onChange={(e) => onChangePrice(e)} ></Form.Input>
+                              <Form.Input label="NAME" value={name || ""} required placeholder='Product name' onChange={(e) => onChangeName(e)}></Form.Input>
+                              <Form.Input label="PRICE"
+                                  value={price || ""}
+                                  placeholder='00.00'
+                                  pattern="([0-9]{1,5})([.]([0-9]{2}))?"
+                                  required
+                                  onChange={(e) => onChangePrice(e)} >                             
+                              </Form.Input>
                           </Form>
                       </Modal.Content>
                       <Modal.Actions>

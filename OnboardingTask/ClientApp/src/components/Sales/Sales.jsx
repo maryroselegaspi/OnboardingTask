@@ -63,10 +63,10 @@ export class Sales extends Component {
 
     render() {
         let dataList = this.state.salesdata;
-        let content = null;
+        //let content = null;
 
         if (dataList !== '') {
-            content = dataList.map(sto => (
+            var  content = dataList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.customer.name}</td>
                     <td>{sto.product.name}</td>

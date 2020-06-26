@@ -85,10 +85,10 @@ export class Product extends Component
         const {direction} = this.state;
         let productList = this.state.data;
 
-        let content = null;
+        //let content = null;
             
         if (productList !== ''){
-            content = productList.map(sto => (
+            var content = productList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.name}</td>
                     <td>{sto.price}</td>

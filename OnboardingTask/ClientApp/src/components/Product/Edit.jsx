@@ -60,8 +60,13 @@ export class Edit extends Component
                       <Header content="Edit Product" />
                       <Modal.Content>
                           <Form >
-                              <Form.Input label="Name" value={name} onChange={onChangeName}></Form.Input>
-                              <Form.Input label="Price" value={price} onChange={onChangePrice}></Form.Input>
+                              <Form.Input label="Name" value={name} required onChange={onChangeName}></Form.Input>
+                              <Form.Input
+                                  label="Price"
+                                  value={price}
+                                  pattern="([0-9]{1,5})([.]([0-9]{2}))?"
+                                  required
+                                  onChange={onChangePrice}></Form.Input>
                           </Form>
                       </Modal.Content>
                       <Modal.Actions>

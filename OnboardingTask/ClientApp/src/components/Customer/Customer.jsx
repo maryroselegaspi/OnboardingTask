@@ -14,6 +14,7 @@ export class Customer extends Component
 {
     _isMounted = false;
     API_URL = api.API_URL;
+    //API_URL = '';
 
     constructor(props){
         super(props);
@@ -54,6 +55,7 @@ export class Customer extends Component
     //Fetch data from the backend
     populateCustomerData = () => {
         axios.get(this.API_URL + "/api/customer")
+        //axios.get("/api/customer")
             .then(result => {
                 if (this._isMounted) {
                     const response = result.data;
@@ -66,8 +68,9 @@ export class Customer extends Component
             .catch(error => {
                 this.setState({ customer: [], loading: false, failed: true, error: "Customer data could not be loaded" });
             })
-            
-        
+
+        //this._isMounted = false;
+        //this.componentWillUnmount();
 
     }
    
@@ -95,11 +98,13 @@ export class Customer extends Component
     
     {
             const { direction } = this.state;
-        let  customerList  = [...this.state.customer];
+        //let customerList = [...this.state.customer];
+            let customerList = this.state.customer;
             //let content = [];
             
             if(customerList !== ''){
                 var content = customerList.map(cust => (
+                //content = customerList.forEach(cust => (
                     //content = Object.values(customerList).forEach((cust) => (
                     <Table.Row key={cust.id}>
                         <Table.Cell>{cust.name}</Table.Cell>

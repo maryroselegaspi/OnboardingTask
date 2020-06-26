@@ -60,8 +60,8 @@ export class Create extends Component
                       <Header content="Create Store" />
                       <Modal.Content>
                           <Form >
-                              <Form.Input label="NAME" placeholder='Name' value={name} onChange={(e) => onChangeName(e)}></Form.Input>
-                              <Form.Input label="ADDRESS" placeholder='Address' value={address} onChange={(e) => onChangeAddress(e)}></Form.Input>
+                              <Form.Input label="NAME" placeholder='Name' required value={name} onChange={(e) => onChangeName(e)}></Form.Input>
+                              <Form.Input label="ADDRESS" placeholder='Address' required value={address} onChange={(e) => onChangeAddress(e)}></Form.Input>
                           </Form>
                       </Modal.Content>
                       <Modal.Actions>

@@ -58,8 +58,8 @@ export class Edit extends Component
                       <Header content="Edit Store" />
                       <Modal.Content>
                           <Form >
-                              <Form.Input label="Name" value={name} onChange={onChangeName}></Form.Input>
-                              <Form.TextArea label="Address" value={address} onChange={onChangeAddress}></Form.TextArea>
+                              <Form.Input label="Name" value={name} required onChange={onChangeName}></Form.Input>
+                              <Form.TextArea label="Address" value={address} required onChange={onChangeAddress}></Form.TextArea>
                           </Form>
                       </Modal.Content>
                       <Modal.Actions>

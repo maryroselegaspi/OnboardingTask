@@ -83,10 +83,10 @@ export class Store extends Component
    
     render(){
         let storeList = this.state.store;
-        let content = null;
+        //let content = null;
             
         if(storeList !== ''){
-            content = storeList.map(sto => (
+            var content = storeList.map(sto => (
                 <tr key={sto.id}>
                     <td>{sto.name}</td>
                     <td>{sto.address}</td>
