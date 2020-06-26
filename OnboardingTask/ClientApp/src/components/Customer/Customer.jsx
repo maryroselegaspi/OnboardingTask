@@ -63,7 +63,7 @@ export class Customer extends Component
                     
                 }
 
-                //console.log(this.state.customer);
+                console.log(this.state.customer);
             })
             .catch(error => {
                 this.setState({ customer: [], loading: false, failed: true, error: "Customer data could not be loaded" });
@@ -94,14 +94,9 @@ export class Customer extends Component
     }
     
    
-    render()
-    
-    {
+    render(){
             const { direction } = this.state;
-        //let customerList = [...this.state.customer];
             let customerList = this.state.customer;
-            //let content = [];
-      
 
         if (customerList && customerList.length>0) {
             var content = customerList.map(cust => {
@@ -115,14 +110,12 @@ export class Customer extends Component
                         <Table.Cell> <Delete id={cust.id} API_URL={this.API_URL} /> </Table.Cell>
                     </Table.Row>
              )})
-
-            
-            //console.log("customerList:", customerList);
         } 
         else {
             console.log('Error loading data!');
         }
         console.log("customerList:", customerList);
+
         return (
                 <React.Fragment>
                 <Create API_URL={this.API_URL} /> 
