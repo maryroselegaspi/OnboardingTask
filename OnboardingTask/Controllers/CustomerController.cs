@@ -25,7 +25,9 @@ namespace OnboardingTask.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
-            return await _context.Customer.ToListAsync();
+            //return await _context.Customer.ToListAsync();
+            List<Customer> customer = await _context.Customer.ToListAsync();
+            return Ok(customer);
         }
 
         // GET: api/Customer/5
