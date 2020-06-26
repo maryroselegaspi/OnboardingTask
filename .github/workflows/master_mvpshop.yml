@@ -18,7 +18,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.102'
+        dotnet-version: '2.1.804'
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'mvpshop'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_27c88e824f30459d9fcc9aa55501b782 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_c804ee5a7fc1434ab6b4cd34df2b8876 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
