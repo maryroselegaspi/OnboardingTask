@@ -101,7 +101,8 @@ export class Customer extends Component
         //let customerList = [...this.state.customer];
             let customerList = this.state.customer;
             //let content = [];
-            
+      
+
         if (customerList && customerList.length>0) {
             var content = customerList.map(cust => {
                 return (
@@ -116,12 +117,12 @@ export class Customer extends Component
              )})
 
             
-            console.log("customerList:", customerList);
+            //console.log("customerList:", customerList);
         } 
         else {
             console.log('Error loading data!');
         }
-        
+        console.log("customerList:", customerList);
         return (
                 <React.Fragment>
                 <Create API_URL={this.API_URL} /> 
