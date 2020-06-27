@@ -51,11 +51,11 @@ export class Product extends Component
 
     // Fetch Data from the back-end
     populateData(){
-        axios.get(this.API_URL + "api/product/").then(result => {
+        axios.get(this.API_URL  + "api/product/").then(result => {
 
             if(this._isMounted){
                 const response = result.data;
-                this.setState({ data: response, loading: false, failed: false, error:""});
+                this.setState({ data: response.json(), loading: false, failed: false, error:""});
             }        
         })
         .catch(error => {

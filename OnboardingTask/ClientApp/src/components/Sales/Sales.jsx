@@ -53,7 +53,9 @@ export class Sales extends Component {
         axios.get(this.API_URL+ "api/sales/")
             .then(result => {
                 if (this._isMounted) {
-                    this.setState({ salesdata: result.data, failed: false, error: "", loading: false });
+
+                    const response = result.data
+                    this.setState({ salesdata: response.json(), failed: false, error: "", loading: false });
                 }         
             })
             .catch(error => {

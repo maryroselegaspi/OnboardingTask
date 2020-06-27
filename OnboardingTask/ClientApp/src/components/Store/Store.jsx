@@ -55,7 +55,7 @@ export class Store extends Component
 
                 if(this._isMounted){
                     const response = result.data;
-                    this.setState({store: response, loading: false, failed: false, error:""});
+                    this.setState({store: response.json(), loading: false, failed: false, error:""});
                 }
             })
             .catch(error => {
