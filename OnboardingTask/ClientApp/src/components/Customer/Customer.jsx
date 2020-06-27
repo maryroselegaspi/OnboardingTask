@@ -13,7 +13,7 @@ import {api} from '../Api'
 export class Customer extends Component
 {
     _isMounted = false;
-    API_URL = api.API_URL;
+    //API_URL = api.API_URL;
     //API_URL = '';
 
     constructor(props){
@@ -54,7 +54,8 @@ export class Customer extends Component
 
     //Fetch data from the backend
     populateCustomerData = () => {
-        axios.get(this.API_URL + "api/customer")
+        axios.get("https://mvpshop.azurewebsites.net/api/customer")
+        //axios.get(this.API_URL + "api/customer") 
         //axios.get("/api/customer")
             .then(result => {
                 if (this._isMounted) {
