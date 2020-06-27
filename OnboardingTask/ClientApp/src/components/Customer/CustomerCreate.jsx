@@ -45,7 +45,7 @@ export class Create extends Component
             Name: this.state.name,
             Address: this.state.address,
         }
-        axios.post(this.props.API_URL + "api/customer/postcustomer", customerObject)
+        axios.post(this.props.API_URL + "api/customer/postcustomer/", customerObject)
     }
 
     render(){

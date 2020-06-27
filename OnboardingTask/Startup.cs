@@ -81,7 +81,14 @@ namespace OnboardingTask
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.SourcePath = "ClientApp";
                     spa.UseReactDevelopmentServer(npmScript: "start");
+
+                }
+                else
+                {
+                    // Issue production build
+                    spa.Options.SourcePath = "ClientApp/build";
                 }
             });
         }

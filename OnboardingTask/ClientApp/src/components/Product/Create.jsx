@@ -47,7 +47,7 @@ export class Create extends Component
             Price: parseFloat(this.state.price),
         }
 
-        axios.post(this.props.API_URL + "api/product/postproduct", productObject)
+        axios.post(this.props.API_URL + "api/product/postproduct/", productObject)
 
     }
 
