@@ -24,14 +24,25 @@ namespace OnboardingTask
         {
 
             services.AddControllersWithViews();
+            services.AddDbContext<OnboardingDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddDbContext<OnboardingDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
-            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+               services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // Add Cors
+            services.AddCors(cors =>
+            {
+                cors.AddPolicy("AllowOpenOrigin", builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                });
+            });
 
         }
 
@@ -48,6 +59,8 @@ namespace OnboardingTask
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("AllowOpenOrigin");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
