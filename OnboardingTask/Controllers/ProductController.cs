@@ -24,7 +24,9 @@ namespace OnboardingTask.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
-            return await _context.Product.ToListAsync();
+            //return await _context.Product.ToListAsync();
+            List<Product> product = await _context.Product.ToListAsync();
+            return Ok(product);
         }
 
         // GET: api/Product/5

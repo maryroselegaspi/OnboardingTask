@@ -130,7 +130,7 @@ export class Edit extends Component
         console.log(this.state.datesold)
 
         axios.put(this.props.API_URL + "/api/sales/putsales/" + id, object)
-           .then(response => alert(response.data))
+           .then(response => console.log(response.data))
           .catch(error => alert(error))
           .then(this.setState({ editshowModal: false}));
     }

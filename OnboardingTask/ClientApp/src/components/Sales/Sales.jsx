@@ -50,12 +50,12 @@ export class Sales extends Component {
 
     // Fetch Data from the back-end
     populateData() {
-        axios.get(this.API_URL+ "api/sales/")
+        axios.get(this.API_URL+ 'api/sales/')
             .then(result => {
                 if (this._isMounted) {
 
                     const response = result.data
-                    this.setState({ salesdata: response.json(), failed: false, error: "", loading: false });
+                    this.setState({ salesdata: response, failed: false, error: "", loading: false });
                 }         
             })
             .catch(error => {

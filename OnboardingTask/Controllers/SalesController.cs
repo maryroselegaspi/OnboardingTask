@@ -25,13 +25,21 @@ namespace OnboardingTask.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sales>>> GetSales()
         {
-           // return await _context.Sales.ToListAsync();
-            return await _context.Sales
+            //// return await _context.Sales.ToListAsync();
+            //return await _context.Sales
+            //    .Include(s => s.Customer)
+            //    .Include(s => s.Product)
+            //    .Include(s => s.Store)
+            //    .ToListAsync();
+
+            List<Sales> sales = await _context.Sales
                 .Include(s => s.Customer)
                 .Include(s => s.Product)
                 .Include(s => s.Store)
                 .ToListAsync();
-        }
+
+            return Ok(sales);
+         }
 
         // GET: api/Sales/5
         [HttpGet("{id}")]

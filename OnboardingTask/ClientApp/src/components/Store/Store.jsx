@@ -50,12 +50,12 @@ export class Store extends Component
   
     // Fetch Data from the back-end
     populateStoreData(){
-        axios.get(this.API_URL+"api/store/")
+        axios.get(this.API_URL+'api/store/')
             .then(result => {
 
                 if(this._isMounted){
                     const response = result.data;
-                    this.setState({store: response.json(), loading: false, failed: false, error:""});
+                    this.setState({store: response, loading: false, failed: false, error:""});
                 }
             })
             .catch(error => {

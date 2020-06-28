@@ -55,12 +55,16 @@ export class Customer extends Component
     //Fetch data from the backend
     populateCustomerData = () => {
         //axios.get("https://mvpshop.azurewebsites.net/api/customer")
-        axios.get(this.API_URL + "api/customer/") 
+        axios.get(this.API_URL + 'api/customer/') 
         //axios.get("/api/customer")
+
+        //use fetch
+        //fetch(this.API_URL + "api/customer/")
+            //.then(response => response.json())
             .then(result => {
                 if (this._isMounted) {
                     const response = result.data;
-                    this.setState({ customer: response.json(), loading: false, failed: false, error: "" });
+                    this.setState({ customer: response, loading: false, failed: false, error: "" });
                     
                 }
 
